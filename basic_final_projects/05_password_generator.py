@@ -6,7 +6,7 @@ symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
 print("Welcome to the PyPassword Generator!")
 
-choice_mode = input("You can choose easy mode or hard mode\n")
+choice_mode = input("You can choose 'easy mode' or 'hard mode'\n")
 
 if choice_mode == "hard mode":
     nr_letters= int(input("How many letters would you like in your password?\n")) 
