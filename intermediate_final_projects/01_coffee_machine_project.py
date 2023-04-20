@@ -8,7 +8,7 @@
 # 6. Check transaction successful?
 # 7. Make Coffee
 
-# 모듈 불러오기 - 메뉴 및 재료 데이터 
+## 1. 모듈 불러오기 - 메뉴 및 재료 데이터 
 from coffee_data import coffee_menu
 from coffee_data import menu_resource
 
@@ -16,7 +16,8 @@ from coffee_data import menu_resource
 menu = coffee_menu.MENU
 resources = menu_resource.resources
 
-# 남아있는 재료를 확인하기 위한 함수 만들기 - 파라미터 order_ingredients
+## 2. 함수 만들기 
+# 2-1. 남아있는 재료를 확인하기 위한 함수 만들기 - 파라미터 (음료 재료)
 def is_resource_sufficient(order_ingredients):
     """Returns True when order can be made, False if ingredients are insuffition"""
     
@@ -31,7 +32,7 @@ def is_resource_sufficient(order_ingredients):
     # 조건이 맞다면(주문이 가능하면) True를 return 
     return True
 
-# 동전처리를 위한 함수 만들기
+# 2-2. 동전처리를 위한 함수 만들기
 def process_coins():
     """Return the total calculated from coins inserted"""
     print("Please insert coins.")   # 동전을 넣어라 안내문 출력
@@ -42,7 +43,7 @@ def process_coins():
     total += int(input("How many pennies?: ")) * 0.01    # pennies - $0.01
     return total 
 
-# 거래 성공 여부 확인 함수 만들기 - 파라미터 (money_received, drink_cost)
+# 2-3. 거래 성공 여부 확인 함수 만들기 - 파라미터 (동전 토탈 금액, 음료 가격)
 def is_transactions_successful(money_received, drink_cost):
     """Return True when the payment is accepted, or Flase if money is insufficient."""
     
@@ -58,7 +59,19 @@ def is_transactions_successful(money_received, drink_cost):
     else:
         print("Sorry, that's not enough money. Money refunded.")
         return False          # 돈이 부족하면 False를 반환 
+
+# 2-4. 커피 재조 함수 만들기 - 파라미터 (음료 이름, 음료 재료) - 음료 재조 후 재료 소진 
+def make_coffee(drink_name, order_ingredients):
+    """Dedust the required ingredients from the resources."""
+    for item in order_ingredients:                  # 주문하고자하는 커피 메뉴 키 값을 저장하기 위해 반복문 사용
+        # 남아있는 재료 - 주문한 음료 재료 
+        resources[item] -= order_ingredients[item]
     
+    # 재조 완료 후 커피 준비!
+    print(f"Here is your {drink_name} ☕️. Enjoy!")   # 재조 완료 후 커피 준비!
+    
+    
+## 3. 동작 코드 
 # while 반복문을 위한 준비 
 is_on = True
 # 매출 발생을 위해 최초 0으로 선언 
@@ -83,7 +96,11 @@ while is_on:
     else:
         # 커피 메뉴 데이터
         drink = menu[choice]
-        # 남아있는 재료를 확인하기 위한 함수 불러오기
-        if is_resource_sufficient(drink['ingredients']):
+        # 남아있는 재료를 확인하기 위한 함수 불러오기 - 만약 남아있는 재료가 있다면,
+        if is_resource_sufficient(drink["ingredients"]):
             # 동전처리를 위한 함수 불러오기 
             payment = process_coins()
+            # 거래 성공 여부 확인 함수 불러오기  - 만약 거래가 성립되면,
+            if is_transactions_successful(payment, drink["cost"]):
+                # 커피 제조 
+                make_coffee(choice, drink["ingredients"])
