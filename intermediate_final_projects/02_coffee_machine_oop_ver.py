@@ -24,7 +24,7 @@ while is_on:
         money_machine.report()            # 현재 커피머신 내 수금된 돈(커피머신 이용 금액) 확인 
     else:                                 # 그밖에 - 만약 커피 메뉴를 입력하면 
         drink = menu.find_drink(choice)   # 생성된 객체 안에 find_drink()라는 메소드 활용 -> find_drink()안에 파라미터로 음료 이름 입력 e.g "latte"
-        # 조건문 작성 - 만약 재료가 충분하고 동전도 금액에 맞게(혹은 그 이상) 입력이 되었다면 ->
+        # 조건문 작성 - 만약 재료가 충분하고 동전도 금액에 맞게(혹은 그 이상) 입력이 되었다면
         if coffee_maker.is_resource_sufficient(drink) and money_machine.make_payment(drink.cost):
             coffee_maker.make_coffee(drink)       # 커피 만들기!
         
