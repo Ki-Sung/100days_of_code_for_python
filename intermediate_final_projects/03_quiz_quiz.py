@@ -16,3 +16,7 @@ quiz = QuizBrain(question_bank)        # QuizBrain 클래스 객체 생성 및 �
 # 퀴즈가 남아있는지 확인 기능 제어
 while quiz.stil_has_question():        # 문제가 남아있는지 체크 
     quiz.next_question()               # 만약 남아있다면(True이면) 다음 질문으로 넘어가고, 남아있지 않다면(False이면) 반복문 종료 
+    
+
+print("You've completed the quiz!")     # 퀴즈 종료 알림 출력 
+print(f"Your final socre was: {quiz.score}/{quiz.question_number}")    # 마지막 퀴즈 점수 결과 출력
