@@ -100,3 +100,4 @@ for _ in range(150):
     turtle.color(random_color())              # 색상 리스트 랜덤으로 호출
     turtle.setheading(random.choice(directions))    # turtle이 바라보는 방향(directions)을 각도 만큼 변경
     turtle.forward(30)      # 30만큼 앞으로 이동
+    
