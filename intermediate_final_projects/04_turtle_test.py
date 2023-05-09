@@ -27,7 +27,7 @@
 #     turtle.forward(100)
 #     turtle.right(90)
 
-# 03. 점섬 그리기 solution 1
+# 03. 점섬 그리기 solution 1 
 # from turtle import Turtle, Screen
 # # 객체 선언 및 각종 설정
 # turtle = Turtle()       # 객체 선언 
