@@ -1,4 +1,4 @@
-# 05. 무작위 행보 
+# 무작위 행보 
 import random 
 import turtle as t
 
