@@ -55,7 +55,7 @@ while is_race_on:
     for turtle in all_turtles:
         if turtle.xcor() > 230:                  # 만약 turtled의 좌표가 230 보다 크다면 
             is_race_on = False                   # 레이스 종료 (while문 빠져나오기)
-            winning_color = turtle.pencolor()    # 종료되면서 가낭 먼저 도착한 turtle의 색상 저장 
+            winning_color = turtle.pencolor()    # 종료되면서 가장 먼저 도착한 turtle의 색상 저장 
             if winning_color == user_bet:        # 만약 "winning_color"와 사용자가 입력한 "user_bet"과 결과가 일치한다면
                 print(f"you've won! The {winning_color} turtle is the winner")      # 이겼다고 출력 
             else:                                                                   # 그 외 결과는 
