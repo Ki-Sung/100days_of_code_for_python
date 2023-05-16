@@ -10,6 +10,7 @@
 ## 1. Build a turtle race 
 
 # 모듈 불러오기 
+import random
 from turtle import Turtle, Screen
 
 # 객체 선언 - Screen
@@ -19,18 +20,23 @@ screen = Screen()
 screen.setup(width=500, height=400)
 
 # 팝업창 띄우기 
+# 파리미터 - title(팝업 제목), prompt(팝업창에 기재된 질문)
 user_bet = screen.textinput(title="Make your bet", prompt="Which turtle will win the race? Enter a color: ")
-print(user_bet)
 
+# 컬러 리스트 생성  
+colors = ["red", "orange", "yellow", "green", "blue", "purple"]
+# y 좌표 생성
+y_position = [-70, -40, -10, 20, 50, 80]
 
-# 객체 선언 - Turtle
-turtle = Turtle(shape="turtle")
+for turtle_index in range(0, 6):
+# 객체 선언 - Turtle - 커서 모양 거북이로 설정 
+    turtle = Turtle(shape="turtle")
+    # 선을 없애기 위해 펜 올리기
+    turtle.penup()
+    turtle.color(colors[turtle_index])   
+    # x, y 좌표대로 turtle(커서) 이동    
+    turtle.goto(x=-230, y=y_position[turtle_index])
 
-# 선을 없애기 위해 펜 올리기
-turtle.penup()
-
-# x, y 좌료대로 turtle(커서) 이동 
-turtle.goto(x=-230, y=-100)
 
 # 화면 클릭시 종료
 screen.exitonclick()
