@@ -13,6 +13,9 @@
 import random
 from turtle import Turtle, Screen
 
+# turtle 레이스를 위한 준비 
+is_race_on = False
+
 # 객체 선언 - Screen
 screen = Screen()
 
@@ -28,14 +31,33 @@ colors = ["red", "orange", "yellow", "green", "blue", "purple"]
 # y 좌표 생성
 y_position = [-70, -40, -10, 20, 50, 80]
 
+all_turtles = []
+
 for turtle_index in range(0, 6):
 # 객체 선언 - Turtle - 커서 모양 거북이로 설정 
-    turtle = Turtle(shape="turtle")
+    new_turtle = Turtle(shape="turtle")
     # 선을 없애기 위해 펜 올리기
-    turtle.penup()
-    turtle.color(colors[turtle_index])   
+    new_turtle.penup()
+    new_turtle.color(colors[turtle_index])   
     # x, y 좌표대로 turtle(커서) 이동    
-    turtle.goto(x=-230, y=y_position[turtle_index])
+    new_turtle.goto(x=-230, y=y_position[turtle_index])
+    all_turtles.append(new_turtle)
+
+if user_bet:
+    is_race_on = True 
+
+while is_race_on:
+    for turtle in all_turtles:
+        if turtle.xcor() > 230:
+            is_race_on = False
+            winning_color = turtle.pencolor()
+            if winning_color == user_bet:
+                print(f"you've won! The {winning_color} turtle is the winner")
+            else:
+                print(f"you've lost! The {winning_color} turtle is the winner")
+            
+        random_distance = random.randint(0, 10)
+        turtle.forward(random_distance)
 
 
 # 화면 클릭시 종료
