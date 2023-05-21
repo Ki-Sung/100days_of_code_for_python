@@ -18,6 +18,13 @@ screen.tracer(0)       # turtle의 애니메이션을 켜거나 끄기 위한 �
 # snake 객체 선언 
 snake = Snake()
 
+# 3. snake 움직임 컨트롤을 위한 설정 
+screen.listen()
+screen.onkey(snake.up, "Up")          # 움직이는 방향을 위한 메소드, 키 설정 - 여기서 키는 키보드 버튼
+screen.onkey(snake.down, "Down")      # 움직이는 방향을 위한 메소드, 키 설정 - 여기서 키는 키보드 버튼
+screen.onkey(snake.left, "Left")      # 움직이는 방향을 위한 메소드, 키 설정 - 여기서 키는 키보드 버튼
+screen.onkey(snake.right, "Right")    # 움직이는 방향을 위한 메소드, 키 설정 - 여기서 키는 키보드 버튼
+
 # 2. Snake 움직임 설정 
 # 동작을 계속하게 하기 위해 while 문 작성 
 game_is_on = True
