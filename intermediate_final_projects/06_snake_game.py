@@ -38,10 +38,16 @@ while game_is_on:
     # Snake 움직임을 위해 move 메소드 사용 
     snake.move()
     
-    # snake food와 충돌 감지 (이벤트 생성)
+    # snake food 및 점수판 설정 (이벤트 생성 1) 
     if snake.head.distance(food) < 15:     # snake의 머리가 15 픽셀 이내 혹은 그보다 더 가까운 거리에 있다면
         food.refresh()                     # food의 refresh 메소드 불러오기 
         scoreboard.increase_score()        # scoreboard의 increase_score 메소드 불러오기
+
+    # 벽 충돌 설정 (이벤트 생성 2)
+    # 만약 x 축이 280보다 크거나, -280보다 작거나, y 축이 280보다 크거나, -280보다 작거나 할 경우 (뱀이 20 X 20이므로 screen 크기에서 20을 뺀 수치로 지정)
+    if snake.head.xcor() > 280 or snake.head.xcor() < -280 or snake.head.ycor() > 280 or snake.head.ycor():
+        game_is_on = False        # while문에서 빠져나오기 즉 게임 종료 
+        scoreboard.game_over()    # scoreboard의 game_over 메소드 불러오기 
 
 # 창 닫힘 설정 
 screen.exitonclick()   # 커서를 누르면 종료 설정

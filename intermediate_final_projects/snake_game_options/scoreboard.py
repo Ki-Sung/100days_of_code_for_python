@@ -24,6 +24,15 @@ class Scoreboard(Turtle):
                 move=False,                    # 움직임 설정 
                 align=ALIGNMENT,               # 가운데 정렬 
                 font=FONT)                     # 폰트 설정
+        
+    # 게임 종료 표시 메소드 
+    def game_over(self):
+        self.goto(0, 0)                        # 종료 표시 위치 설정 
+        self.write(
+                arg='Game Over',               # Turtle 화면에 문자 출력 
+                move=False,                    # 움직임 설정 
+                align=ALIGNMENT,               # 가운데 정렬 
+                font=FONT)                     # 폰트 설정
     
     # 점수판 점수 증가 메소드     
     def increase_score(self):
