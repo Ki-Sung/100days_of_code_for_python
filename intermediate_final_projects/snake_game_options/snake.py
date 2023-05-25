@@ -19,11 +19,20 @@ class Snake:
     # 위에 init 함수에 지정한 create_snake() 메소드 생성 
     def create_snake(self):
         for position in STARTING_POSITIONS:
-            new_segment = Turtle(shape="square")
-            new_segment.color("white")
-            new_segment.penup()
-            new_segment.goto(position)
-            self.segments.append(new_segment)
+            self.add_segment(position)     # 아라에 있는 add_segment 메소드 불러오기
+    
+    # 뱀의 길이가 늘어나기 위한 tutle 설정이 들어간 add_segment() 메소드 
+    def add_segment(self, position):
+        new_segment = Turtle(shape="square")      # turtle 모양 설정 
+        new_segment.color("white")                # tuttle 색상 설정 
+        new_segment.penup()                       # 선을 없애기 위해 penup 설정 
+        new_segment.goto(position)                # position(위치)로 가기 
+        self.segments.append(new_segment)         
+    
+    # 먹이를 먹을 때 뱀의 길이가 늘어나는 extend 메소드 생성
+    def extend(self):
+        # 새로운 snake(segment) 추가
+        self.add_segment(self.segments[-1].position())    # segment 마지막에 추가 
         
     # snake의 움직임 설정인 move 메소드 생성     
     def move(self):

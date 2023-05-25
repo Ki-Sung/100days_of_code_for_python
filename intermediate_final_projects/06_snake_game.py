@@ -41,6 +41,7 @@ while game_is_on:
     # snake food 및 점수판 설정 (이벤트 생성 1) 
     if snake.head.distance(food) < 15:     # snake의 머리가 15 픽셀 이내 혹은 그보다 더 가까운 거리에 있다면
         food.refresh()                     # food의 refresh 메소드 불러오기 
+        snake.extend()                     # snake의 꼬리가 늘어나는 메소드 불러오기
         scoreboard.increase_score()        # scoreboard의 increase_score 메소드 불러오기
 
     # 벽 충돌 설정 (이벤트 생성 2)
@@ -49,5 +50,13 @@ while game_is_on:
         game_is_on = False        # while문에서 빠져나오기 즉 게임 종료 
         scoreboard.game_over()    # scoreboard의 game_over 메소드 불러오기 
 
+    # 꼬리와 충돌 감지 
+    for segment in snake.segments:
+        if segment == snake.head:
+            pass
+        elif snake.head.distance(segment) < 10:
+            game_is_on =False 
+            scoreboard.game_over()
+    
 # 창 닫힘 설정 
 screen.exitonclick()   # 커서를 누르면 종료 설정
