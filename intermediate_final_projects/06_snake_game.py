@@ -51,12 +51,11 @@ while game_is_on:
         scoreboard.game_over()    # scoreboard의 game_over 메소드 불러오기 
 
     # 꼬리와 충돌 감지 - 머리가 꼬리의 아무 세그먼트와 충돌하면, 게임이 끝난 것이므로 게임 종료 절차가 진행됨
-    for segment in snake.segments:                  # 뱀을 이루는 세그먼트 리스트를 반목문으로 돌려 확인
-        if segment == snake.head:                   # 현재 세그먼트가 뱀의 머리면
-            pass                                    # pass
-        elif snake.head.distance(segment) < 10:     # 만약 뱀의 머리로 부터의 거리가 10보다 작다면
-            game_is_on =False                       # while문 빠져나오기 (게임 종료)
-            scoreboard.game_over()                  # "Game over" 문구 출력
+    print(snake.segments)
+    for segment in snake.segments[1:]:                  # 뱀을 이루는 세그먼트 리스트를 반목문으로 돌려 확인
+        if snake.head.distance(segment) < 10:           # 만약 뱀의 머리로 부터의 거리가 10보다 작다면
+            game_is_on =False                           # while문 빠져나오기 (게임 종료)
+            scoreboard.game_over()                      # "Game over" 문구 출력
     
 # 창 닫힘 설정 
 screen.exitonclick()   # 커서를 누르면 종료 설정
