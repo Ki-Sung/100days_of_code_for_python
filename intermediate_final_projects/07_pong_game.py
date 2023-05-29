@@ -7,7 +7,7 @@ from pong_game_options.paddle import Paddle
 from pong_game_options.ball import Ball
 
 # Screen 설정
-screen = Screen()     # 객체선언 
+screen = Screen()                      # 객체선언 
 screen.setup(width=800, height=600)    # Screen 크기 설정 (800X600)
 screen.bgcolor('black')                # Screen 백그라운드 설정 (블랙)
 screen.title('Pong')                   # 게임 타이틀 설정 
@@ -37,7 +37,11 @@ while game_is_on:                  # 게임 실행중일 때
     screen.update()                # screen 업데이트
     time.sleep(0.1)                # 반복문 돌 때마다 0.1초씩 정지(ball speed 설정)
     ball.move()                    # ball 움직임 실행
-
+    
+    # 벽과의 충돌 감지 이벤트 
+    if ball.ycor() > 280 or ball.ycor() < -280:    # 만약 위치가 공의 y축이 280보다 크거나 공의 y축이 -280 보다 작다면
+        # 공을 튕기는 옵션 
+        ball.bounce()
     
 # 창 닫힘 설정
 screen.exitonclick()                    # 커서를 누르면 종료
