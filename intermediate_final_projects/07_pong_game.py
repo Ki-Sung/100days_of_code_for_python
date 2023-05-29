@@ -1,8 +1,10 @@
 # 정리는 intermediate 폴더 쥬피터 노트북 파일 day22에 정리 
 
 # 모듈 불러오기 
+import time
 from turtle import Screen
 from pong_game_options.paddle import Paddle
+from pong_game_options.ball import Ball
 
 # Screen 설정
 screen = Screen()     # 객체선언 
@@ -14,6 +16,9 @@ screen.tracer(0)                       # 애니메이션 제어 설정 -> 0: 애
 # Paddle 클래스로 객체 선언 
 r_paddle = Paddle((350, 0))            # 오른쪽 paddle 객체선언 (paddle 생성)
 l_paddle = Paddle((-350, 0))           # 왼쪽 paddle 객체선언 (paddle 생성)
+
+# Ball 클래스로 객체 선언 
+ball = Ball()
 
 #키 설정 
 screen.listen()                         # 키 이벤트를 위한 설정으로 객체 선언 
@@ -30,7 +35,8 @@ screen.onkey(l_paddle.go_down, "s")     # 방향키 아래를 눌렀을 때 아�
 game_is_on = True                  # 게임 실행중을 위한 설정 
 while game_is_on:                  # 게임 실행중일 때
     screen.update()                # screen 업데이트
-
+    time.sleep(0.1)                # 반복문 돌 때마다 0.1초씩 정지(ball speed 설정)
+    ball.move()                    # ball 움직임 실행
 
     
 # 창 닫힘 설정
