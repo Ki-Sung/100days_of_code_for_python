@@ -48,6 +48,17 @@ while game_is_on:                  # 게임 실행중일 때
     if ball.distance(r_paddle) < 50 and ball.xcor() > 320 or ball.distance(l_paddle) < 50 and ball.xcor() < -320:
         # 공을 튕겨내기 (paddle로 부터)
         ball.bounce_x()
+        
+    # 오른쪽 패들이 공을 놓칠 경우 
+    # 만약 ball의 x좌표가 380보다 크다면,
+    if ball.xcor() > 380:
+        ball.reset_postion()
+    
+    # 왼쪽 패들이 공을 놓칠 경우 
+    # 만약 ball의 x좌표가 -380보다 작다면,
+    if ball.xcor() < -380:
+        ball.reset_postion()
+        
     
 # 창 닫힘 설정
 screen.exitonclick()                    # 커서를 누르면 종료

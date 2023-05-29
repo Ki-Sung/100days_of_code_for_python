@@ -28,3 +28,8 @@ class Ball(Turtle):
         # 원래 +10이 었으면 반대인 -10으로 바꿔주고, 원래 -10이 었으면 +10으로 바꿔준다
         # 그래서 아래와 같이 -1을 곱해준다.
         self.x_move *= -1
+    
+    # 공을 놓쳤을 경우 공의 위치를 다시 reset 시키는 설정의 메소드     
+    def reset_postion(self):
+        self.goto(0, 0)          # 공을 가운데 위치로 이동
+        self.bounce_x()          # 놓친 패들의 방향에 따라 위치가 반대가 되야히기에 위의 bounce_x 메소드를 부름
