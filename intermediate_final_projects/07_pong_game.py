@@ -5,6 +5,7 @@ import time
 from turtle import Screen
 from pong_game_options.paddle import Paddle
 from pong_game_options.ball import Ball
+from pong_game_options.scoreboard import Scoreboard
 
 # Screen 설정
 screen = Screen()                      # 객체선언 
@@ -19,6 +20,9 @@ l_paddle = Paddle((-350, 0))           # 왼쪽 paddle 객체선언 (paddle 생�
 
 # Ball 클래스로 객체 선언 
 ball = Ball()
+
+# Scoreboard 클래스 객채 선언 
+scoreboard = Scoreboard()
 
 #키 설정 
 screen.listen()                         # 키 이벤트를 위한 설정으로 객체 선언 
@@ -35,7 +39,7 @@ screen.onkey(l_paddle.go_down, "s")     # 방향키 아래를 눌렀을 때 아�
 game_is_on = True                  # 게임 실행중을 위한 설정 
 while game_is_on:                  # 게임 실행중일 때
     screen.update()                # screen 업데이트
-    time.sleep(0.1)                # 반복문 돌 때마다 0.1초씩 정지(ball speed 설정)
+    time.sleep(ball.move_speed)    # 반복문 돌 때마다 0.1초씩 정지(ball speed 설정)
     ball.move()                    # ball 움직임 실행
     
     # 벽과의 충돌 감지 이벤트 
@@ -52,12 +56,14 @@ while game_is_on:                  # 게임 실행중일 때
     # 오른쪽 패들이 공을 놓칠 경우 
     # 만약 ball의 x좌표가 380보다 크다면,
     if ball.xcor() > 380:
-        ball.reset_postion()
+        ball.reset_postion()   # 공 위치 가운데로 리셋
+        scoreboard.l_point()   # 왼쪽 패들 점수 득점
     
     # 왼쪽 패들이 공을 놓칠 경우 
     # 만약 ball의 x좌표가 -380보다 작다면,
     if ball.xcor() < -380:
-        ball.reset_postion()
+        ball.reset_postion()   # 공 위치 가운데로 리셋
+        scoreboard.r_point()   # 오른쪽 패들 점수 득점 
         
     
 # 창 닫힘 설정

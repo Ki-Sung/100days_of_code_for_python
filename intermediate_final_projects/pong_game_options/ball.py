@@ -9,6 +9,7 @@ class Ball(Turtle):
         self.penup()              # 선 없애기 
         self.x_move = 10          # ball x 좌표 
         self.y_move = 10          # ball y 좌표 
+        self.move_speed = 0.1     # ball speed 설정 
         
     def move(self):
         new_x = self.xcor() + self.x_move  # ball x 좌표설정 
@@ -28,8 +29,10 @@ class Ball(Turtle):
         # 원래 +10이 었으면 반대인 -10으로 바꿔주고, 원래 -10이 었으면 +10으로 바꿔준다
         # 그래서 아래와 같이 -1을 곱해준다.
         self.x_move *= -1
+        self.move_speed *= 0.9           # 패들에 공이 튕길 때 마다 속도가 올라가는 설정 
     
     # 공을 놓쳤을 경우 공의 위치를 다시 reset 시키는 설정의 메소드     
     def reset_postion(self):
         self.goto(0, 0)          # 공을 가운데 위치로 이동
+        self.move_speed = 0.1    # 공을 놓쳤을때 공 속도 초기회 
         self.bounce_x()          # 놓친 패들의 방향에 따라 위치가 반대가 되야히기에 위의 bounce_x 메소드를 부름
