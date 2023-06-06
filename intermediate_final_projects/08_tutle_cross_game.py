@@ -9,10 +9,16 @@ screen = Screen()                      # Screen 객체 선언
 
 # 화면 사이즈 설정 
 screen.setup(width=600, height=600)    # 600 x 600 사이즈로 화면 설정 
+screen.title('Turtle Cross Game')
 screen.tracer(0)                       # 화면 자동 갱신 기능 Off 설정 
+
+player = Player()
 
 # 게임 실행중 
 game_is_on = True   
 while game_is_on:     
     time.sleep(0.1)                    # 화면 갱신 시간 설정 0.1초 
     screen.update()                    # update를 이용하여 갱신 
+
+# 창 닫힘 설정 
+screen.exitonclick()
