@@ -13,7 +13,10 @@ screen.title('Turtle Cross Game')
 screen.tracer(0)                       # 화면 자동 갱신 기능 Off 설정 
 
 # Player 클래스 객체 선언
-player = Player()                     
+player = Player()   
+
+# CarManager 클래스 객체 선언 
+car_manager = CarManager()                  
 
 # 화면에 이벤트들 생성하기 위한 설정 
 screen.listen()
@@ -25,6 +28,9 @@ game_is_on = True
 while game_is_on:     
     time.sleep(0.1)                    # 화면 갱신 시간 설정 0.1초 
     screen.update()                    # update를 이용하여 갱신 
+    
+    car_manager.create_car()           # 자동차 생성 메소드 불러오기 - 6번에 1번 꼴로 새 자동차가 만들어지도록 설정
+    car_manager.move_cars()            # 자동차 움직임 설정 메소들 불러오기
 
 # 창 닫힘 설정 
 screen.exitonclick()
