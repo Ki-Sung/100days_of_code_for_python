@@ -6,7 +6,7 @@ STARTING_POSITION = (0, -280)   # turtle 시작점 설정
 MOVE_DISTANCE = 10              # turtle의 움직이는 거리수 
 FINISH_LINE_Y = 280             # 도작점 좌표수 
 
-# 클래스 선언
+# 각종 player 설정을 위한 Player 클래스 선언
 class Player(Turtle):
     # 초기 설정
     def __init__(self):

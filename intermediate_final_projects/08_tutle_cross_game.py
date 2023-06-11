@@ -9,14 +9,17 @@ screen = Screen()                      # Screen 객체 선언
 
 # 화면 사이즈 설정 
 screen.setup(width=600, height=600)    # 600 x 600 사이즈로 화면 설정 
-screen.title('Turtle Cross Game')
+screen.title('Turtle Cross Game')      # 화면 타이틀 설정
 screen.tracer(0)                       # 화면 자동 갱신 기능 Off 설정 
 
 # Player 클래스 객체 선언
 player = Player()   
 
 # CarManager 클래스 객체 선언 
-car_manager = CarManager()                  
+car_manager = CarManager()  
+
+# Scoreboard 클래스 객체 선언
+scoreboard = Scoreboard()                
 
 # 화면에 이벤트들 생성하기 위한 설정 
 screen.listen()
@@ -36,11 +39,13 @@ while game_is_on:
     for car in car_manager.all_cars:           # 모은 자동차 정보로 반복문 생성 
         if car.distance(player) < 20:          # 만약 자동차와 Turtle의 거리가 20 미만이면 (자동차(장애물)와 Turtle 객체까지의 거리가 20 이하인지 탐지)
             game_is_on = False                 # 게임 종료 
+            scoreboard.game_over()             # 게임 종료 문구 출력 
             
     # 결승점 도착시 이벤트 관련 영역 
     if player.is_at_finish_line():              # 만약 Turtle이 결승점에 도착할 경우 
         player.got_to_start()                   # 다시 시작점으로 되돌아가기 
         car_manager.level_up()                  # 레벨업(자동차(장애물) 속도 증가)
+        scoreboard.increase_level()             # 레벨업 문구 설정
             
 # 창 닫힘 설정 
 screen.exitonclick()

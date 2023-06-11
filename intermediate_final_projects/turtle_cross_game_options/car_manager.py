@@ -7,7 +7,7 @@ COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]    # 자동차 �
 STARTING_MOVE_DISTANCE = 5       # 자동차 움직임의 수 
 MOVE_INCREMENT = 10              # 자동차 움직임 증가 수
 
-
+# 자동차(장애물) 설정을 위한 CarManager 클래스 선언 
 class CarManager:
     # 초기 설정 
     def __init__(self):
