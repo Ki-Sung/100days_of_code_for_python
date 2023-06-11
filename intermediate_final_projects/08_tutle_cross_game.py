@@ -12,7 +12,13 @@ screen.setup(width=600, height=600)    # 600 x 600 사이즈로 화면 설정
 screen.title('Turtle Cross Game')
 screen.tracer(0)                       # 화면 자동 갱신 기능 Off 설정 
 
-player = Player()
+# Player 클래스 객체 선언
+player = Player()                     
+
+# 화면에 이벤트들 생성하기 위한 설정 
+screen.listen()
+# 화면 내 키 이벤트 설정
+screen.onkey(player.go_up, 'Up')      # 위 화살표 키를 누르면 앞으로 전진하는 기능을 하는 메소드 설정 
 
 # 게임 실행중 
 game_is_on = True   
