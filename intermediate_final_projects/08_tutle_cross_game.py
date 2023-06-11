@@ -31,6 +31,11 @@ while game_is_on:
     
     car_manager.create_car()           # 자동차 생성 메소드 불러오기 - 6번에 1번 꼴로 새 자동차가 만들어지도록 설정
     car_manager.move_cars()            # 자동차 움직임 설정 메소들 불러오기
-
+    
+    # 자동차(장애물) 충돌 감지 영역 
+    for car in car_manager.all_cars:           # 모은 자동차 정보로 반복문 생성 
+        if car.distance(player) < 20:          # 만약 자동차와 Turtle의 거리가 20 미만이면 (자동차(장애물)와 Turtle 객체까지의 거리가 20 이하인지 탐지)
+            game_is_on = False                 # 게임 종료 
+            
 # 창 닫힘 설정 
 screen.exitonclick()
