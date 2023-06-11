@@ -37,5 +37,10 @@ while game_is_on:
         if car.distance(player) < 20:          # 만약 자동차와 Turtle의 거리가 20 미만이면 (자동차(장애물)와 Turtle 객체까지의 거리가 20 이하인지 탐지)
             game_is_on = False                 # 게임 종료 
             
+    # 결승점 도착시 이벤트 관련 영역 
+    if player.is_at_finish_line():              # 만약 Turtle이 결승점에 도착할 경우 
+        player.got_to_start()                   # 다시 시작점으로 되돌아가기 
+        car_manager.level_up()                  # 레벨업(자동차(장애물) 속도 증가)
+            
 # 창 닫힘 설정 
 screen.exitonclick()

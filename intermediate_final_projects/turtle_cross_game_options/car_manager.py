@@ -5,13 +5,14 @@ from turtle import Turtle
 # 상수 설정 
 COLORS = ["red", "orange", "yellow", "green", "blue", "purple"]    # 자동차 색상 설정 
 STARTING_MOVE_DISTANCE = 5       # 자동차 움직임의 수 
-MOVE_INCREMENT = 10              # 자동참 움직임 증가 수
+MOVE_INCREMENT = 10              # 자동차 움직임 증가 수
 
 
 class CarManager:
     # 초기 설정 
     def __init__(self):
-        self.all_cars = []      # 자동차(장애물) 정보를 담을 빈 리스트 생성 
+        self.all_cars = []                          # 자동차(장애물) 정보를 담을 빈 리스트 생성 
+        self.car_speed = STARTING_MOVE_DISTANCE     # 자동차(장애물) 속도를 올리기 위해 움직임수 설정 
     
     # 자동차(장애물)생성을 위한 메소드 
     def create_car(self):
@@ -28,4 +29,8 @@ class CarManager:
     # 자동차(장애물)을 움직이게 하기 위한 메소드
     def move_cars(self):
         for car in self.all_cars:                               # 저장된 자동차(장애물) 정보들을 반복문으로 사용 
-            car.backward(STARTING_MOVE_DISTANCE)                # 해당 자동차(장애물)를 거리수 5만큼 움직이게 설정
+            car.backward(self.car_speed)                        # 해당 자동차(장애물)를 거리수 5만큼 움직이게 설정
+            
+    # Turtle이 결승점에 통과후 레벨 즉 자동차(장애물) 속도를 올리기 위한 설정 메소드 
+    def level_up(self):
+        self.car_speed += MOVE_INCREMENT       # 자동차(장애물) 속도 10씩 증가
