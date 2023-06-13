@@ -4,14 +4,14 @@ from turtle import Turtle
 ALIGNMENT = 'center'
 FONT = ('Courier', 24, 'normal')
 
-
 # 스코어 제어 클래스 
 class Scoreboard(Turtle):
     # 초기화 메소드 
     def __init__(self):
         super().__init__()
         self.score = 0          # 초기 점수 
-        self.high_score = 0     # 최고 점수판을 위한 초기 점수 지정
+        with open("snake_game_options/data.txt") as data:
+            self.high_score = int(data.read())    # 최고 점수판을 위한 초기 점수 지정
         self.color("white")     # 점수판 색상 설정 
         self.penup()            # 선 나오지 않게 설정 
         self.goto(0, 270)       # 지정한 위치에 점수판 위치 설정   
@@ -31,7 +31,9 @@ class Scoreboard(Turtle):
     def reset(self):
         # 1. 최고 점수 업데이트
         if self.score > self.high_score:   # 만약에 현재 점수가 현 최고 점수보다 높다면,
-            self.high_score = self.score   # high_score에 현재 높은 점수 저장 
+            self.high_score = self.score   # high_score에 현재 높은 점수 저장
+            with open("snake_game_options/data.txt", mode="w") as data:
+                data.write(f"{self.high_score}")
         
         # 2. 점수 재설정 
         self.score = 0                     # 그 다음 시작할 점수 재설정 
