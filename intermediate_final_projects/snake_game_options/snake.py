@@ -19,7 +19,7 @@ class Snake:
     # 위에 init 함수에 지정한 create_snake() 메소드 생성 
     def create_snake(self):
         for position in STARTING_POSITIONS:
-            self.add_segment(position)     # 아라에 있는 add_segment 메소드 불러와서 전달
+            self.add_segment(position)     # 아래에 있는 add_segment 메소드 불러와서 전달
     
     # 뱀의 길이가 늘어나기 위한 tutle 설정이 들어간 add_segment() 메소드 - 세그먼트가 추가될 위치가 반드시 필요
     def add_segment(self, position):             
@@ -28,7 +28,16 @@ class Snake:
         new_segment.penup()                       # 선을 없애기 위해 penup 설정 
         new_segment.goto(position)                # position(위치)로 가기 
         self.segments.append(new_segment)         
-    
+        
+    # 충돌하여 앞선 game이 종료되었을 때, snake를 다시 초기화 시키는 설정 메소드
+    def reset(self):
+        # reset 되었을 때, 전에 있던 뱀 사라지게 하기 
+        for seg in self.segments:
+            seg.goto(1000, 1000)            # 600 X 600 이므로 1000 X 10000 하게하여 뱀을 밖으로 내보내버리기 
+        self.segments.clear()               # 추가 되었던 모든 segments(늘어난 뱀 꼬리) 모두 삭제 
+        self.create_snake()                 # 다시 시작할 떄 새로운 snake 생성 
+        self.head = self.segments[0]   # snake 머리 속성 지정  
+        
     # 먹이를 먹을 때 뱀의 길이가 늘어나는 extend 메소드 생성
     def extend(self):
         # 새로운 snake(segment) 추가
