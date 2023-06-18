@@ -12,7 +12,7 @@
   - Advanced
 
 ### Projects 
-#### Basic 
+#### [Basic](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/basic_final_projects)
 - Tip Calculator
 - Treasure Island
 - Treasure Map 
@@ -25,7 +25,7 @@
 - Play Blackjack 
 - Play guess number
 - Higher lower
-#### Intermediate 
+#### [Intermediate](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/intermediate_final_projects)
 - Coffee Machine Project
 - Quiz quiz
 - Hirst painting
