@@ -22,15 +22,21 @@ while len(guessed_states) < 50:             # 50개주 모두 맞추기 전까�
     answer_state = screen.textinput(title=f"{len(guessed_states)}/50 Sates Correct", 
                                     prompt="What's another state's name?").title()   # 입려창 설정
 
-    # hidden key 설정 
-    if answer_state == 'Exit':                    # 만약 "Exit"를 입력하면 
-        missig_states = []                        # "Exit"를 누르고, 맞추지 못한 states 이름을  저장하기 위해 빈 리스트 선언  
-        for state in all_states:                  # 반복문 사용 - all_states에 있는 데이터 state로 하나씩 저장
-            if state not in guessed_states:       # 만약 state가 guessed_states에 있지 않으면,
-                missig_states.append(state)       # missing_states 빈 리스트에 저장 
-        new_data = pd.DataFrame(missig_states)    # 저장된 missing_states를 데이터프레임으로 저장
-        new_data.to_csv('us_state_game_options/states_to_learn.csv')   # 저장된 데이터 csv로 저장 
-        break                                     # 게임종료 
+    # hidden key 설정 - list comprehension으로 변환 
+    if answer_state == 'Exit': 
+        missig_states = [state for state in all_states if state not in guessed_states]
+        new_data = pd.DataFrame(missig_states)
+        new_data.to_csv('us_state_game_options/states_to_learn.csv')
+        break
+    
+    # if answer_state == 'Exit':                    # 만약 "Exit"를 입력하면 
+    #     missig_states = []                        # "Exit"를 누르고, 맞추지 못한 states 이름을  저장하기 위해 빈 리스트 선언  
+    #     for state in all_states:                  # 반복문 사용 - all_states에 있는 데이터 state로 하나씩 저장
+    #         if state not in guessed_states:       # 만약 state가 guessed_states에 있지 않으면,
+    #             missig_states.append(state)       # missing_states 빈 리스트에 저장 
+    #     new_data = pd.DataFrame(missig_states)    # 저장된 missing_states를 데이터프레임으로 저장
+    #     new_data.to_csv('us_state_game_options/states_to_learn.csv')   # 저장된 데이터 csv로 저장 
+    #     break                                     # 게임종료 
     
     # answer_state는 입력 값이 50_states.csv에 있는 주인지 확인하기 
     if answer_state in all_states:                # 만약 answer_state 데이터가 all_states 안에 있다면,
