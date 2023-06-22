@@ -19,20 +19,22 @@
 - Rock Scissors Paper
 - Password Generator
 - Play Hangman Game 
-- Caesar cipher
+- Caesar Cipher
 - Blind Auction 
 - Calculator
 - Play Blackjack 
-- Play guess number
-- Higher lower
+- Play Guess Number
+- Higher Lower
 #### [Intermediate](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/intermediate_final_projects)
 - Coffee Machine Project
-- Quiz quiz
-- Hirst painting
-- Turtle race game
-- Snake game
-- Pong game
-- Turtle Cross game
+- Quiz Quiz
+- Hirst Painting
+- Turtle Race Game
+- Snake Game
+- Pong Game
+- Turtle Cross Game
+- Us States Game
+- Nato Phonetic Alphabet
 
 ### Etc
 #### Usefull Generator
