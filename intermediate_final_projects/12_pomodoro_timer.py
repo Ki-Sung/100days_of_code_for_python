@@ -15,14 +15,33 @@ FONT_NAME = "Courier"
 WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
+# global variable
+reps = 0
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 # 타이머 함수 설정 
 def start_timer():
+    global reps                        # 전역 변수 불러오기 
+    reps += 1                          # 전역 변수에서 1 더하기 
     
-    count_down(5 * 60)                       # 카운트다운 기능 호출  (시작 시간 설정 - 초)
+    # 시간 설정 
+    work_sec = WORK_MIN * 60                 # work time -> 25분 
+    short_break_sec = SHORT_BREAK_MIN * 60   # short break time -> 5분 
+    long_break_sec = LONG_BREAK_MIN * 60     # long break time -> 20분 
+    
+    # reps 마다 타이머 설정 
+    if reps % 8 == 0:                                 # 만약 8번째 reps이면 
+        count_down(long_break_sec)                    # 20분 출력 
+        title_label.config(text="Break", fg=RED)      # title "Break" 출력 
+    elif reps % 2 == 0:                               # 만약 2/4/6 번째 reps이면 
+        count_down(short_break_sec)                   # 5분 출력 
+        title_label.config(text="Break", fg=PINK)     # title "Break" 출력 
+    else:                                             # 나머지 
+        count_down(work_sec)                          # 25분 출력 
+        title_label.config(text="Working", fg=GREEN)  # title "Working" 출력 
+    
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
 # count_down 함수 설정 
@@ -30,12 +49,14 @@ def count_down(count):
     # 카운트다운 시작 시간 설정 
     count_min = math.floor(count / 60)                                    # 분 계산 - count(초) / 60(초)
     count_sec = count % 60                                                # 초 계산 - count(초) % 60(초) -> 나머지 
-    if count_sec < 10:
-        count_sec = f"0{count_sec}"
+    if count_sec < 10:                                                    # 만약 count_sec이 10 미만일 겨우 
+        count_sec = f"0{count_sec}"                                       # count_sec을 00 형식으로 설정 (예:09)
     
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")        # canvas.itemconfig() - tkinter를 동적으로 나타낼 수 있는 메소드 
     if count > 0:                                                         # 만약 count가 0 보다 크면
         window.after(1000, count_down, count - 1)                         # 1초 뒤에 say_somthing 함수를 이용하여 카운트다운 호출 (1씩 줄어듬)
+    else:                                                                 # 나머지 
+        start_timer()                                                     # 타이머 다시 시작 (start_timer 함수 재가동)
 # ---------------------------- UI SETUP ------------------------------- #
 # 기본 설정 
 window = Tk()                                   # tkinter 객체 선언 
