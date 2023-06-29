@@ -30,6 +30,8 @@ def count_down(count):
     # 카운트다운 시작 시간 설정 
     count_min = math.floor(count / 60)                                    # 분 계산 - count(초) / 60(초)
     count_sec = count % 60                                                # 초 계산 - count(초) % 60(초) -> 나머지 
+    if count_sec < 10:
+        count_sec = f"0{count_sec}"
     
     canvas.itemconfig(timer_text, text=f"{count_min}:{count_sec}")        # canvas.itemconfig() - tkinter를 동적으로 나타낼 수 있는 메소드 
     if count > 0:                                                         # 만약 count가 0 보다 크면
@@ -52,7 +54,7 @@ timer_text = canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT
 canvas.grid(column=1, row=1)                                                             # 설정한 cancas 명시 
 
 # button 1 - start 
-start_button = Button(text="Start", bg=YELLOW, highlightthickness=0, command=start_timer)                     # start 버튼 설정 - 버튼 이름, 색상, 두깨 설정 
+start_button = Button(text="Start", bg=YELLOW, highlightthickness=0, command=start_timer)   # start 버튼 설정 - 버튼 이름, 색상, 두깨 설정 
 start_button.grid(column=0, row=2)                                                       # start 버튼 명시
 
 # button 2 - Reset 
