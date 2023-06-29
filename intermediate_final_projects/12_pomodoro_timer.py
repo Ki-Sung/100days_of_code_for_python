@@ -21,6 +21,11 @@ LONG_BREAK_MIN = 20
 # ---------------------------- TIMER MECHANISM ------------------------------- # 
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+def count_down(count):
+    canvas.itemconfig(timer_text, text=count)
+    if count > 0:
+        window.after(1000, count_down, count - 1)                   # 1초 뒤에 say_somthing 함수를 이용하여 3, 4, 5 추출 
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 # 기본 설정 
@@ -36,8 +41,10 @@ title_label.grid(column=1, row=0)                                               
 canvas = Canvas(width=200, height=224, bg=YELLOW, highlightthickness=0)                  # Canvas 객체 선언 - 선언시 윈도우 사이즈, 배경색, 이미지 경계선 설정 추가 
 tomato_img = PhotoImage(file='./img/tomato.png')                                         # 이미지 불러오기 
 canvas.create_image(100, 112, image=tomato_img)                                          # 이미지 생성 - 생성시 크기 설정 
-canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT_NAME, 35, "bold"))   # 이미지 위에 들어갈 타이머(text) 설정 
+timer_text = canvas.create_text(100, 130, text="00:00", fill='white', font=(FONT_NAME, 35, "bold"))   # 이미지 위에 들어갈 타이머(text) 설정 
 canvas.grid(column=1, row=1)                                   # 설정한 cancas 명시 
+
+count_down(5)
 
 # button 1 - start 
 start_button = Button(text="Start", bg=YELLOW, highlightthickness=0)                     # start 버튼 설정 - 버튼 이름, 색상, 두깨 설정 
