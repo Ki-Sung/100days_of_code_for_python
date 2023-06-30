@@ -12,8 +12,8 @@ YELLOW = "#f7f5dd"
 # word font
 FONT_NAME = "Courier"
 # timer 
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
+WORK_MIN = 50
+SHORT_BREAK_MIN = 10
 LONG_BREAK_MIN = 20
 # global variable
 reps = 0
