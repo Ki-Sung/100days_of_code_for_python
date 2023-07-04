@@ -12,16 +12,21 @@ def save():
     email = userid_input.get()           # user_id
     password = password_input.get()      # password 명 
     
-    # messagebox 기능 추가 - 입려창에 입력 후 확인 팝업 생성 
-    is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} "
-                                                        f"\nPassword: {password} \nIs it Ok to save?")
-    if is_ok:
-        with open("data/data.txt", "a") as data_file:                # "append"모드로 text 파일에 저장 
-            data_file.write(f"{website} | {email} | {password}\n")   # "write"모드로 data.text 파일 저장
-            website_input.delete(0, END)                             # 파일 저장 후 이전에 입력한 website 명을 삭제 
-            password_input.delete(0, END)                            # 파일 저장 후 이전에 입력한 password 삭제 
-        
-        
+    # 유효성 검사 
+    if len(website) == 0 or len(password) == 0:       # 만약 website, password가 입력되지 않았다면,
+        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")   # 메시지 출력
+    
+    # 그외 
+    else:
+        # messagebox 기능 추가 - 입려창에 입력 후 확인 팝업 생성 
+        is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} "
+                                                            f"\nPassword: {password} \nIs it Ok to save?")
+        if is_ok:
+            with open("data/data.txt", "a") as data_file:                # "append"모드로 text 파일에 저장 
+                data_file.write(f"{website} | {email} | {password}\n")   # "write"모드로 data.text 파일 저장
+                website_input.delete(0, END)                             # 파일 저장 후 이전에 입력한 website 명을 삭제 
+                password_input.delete(0, END)                            # 파일 저장 후 이전에 입력한 password 삭제 
+
 # ---------------------------- UI SETUP ------------------------------- #
 # 기본 설정 
 window = Tk()                                     # tkinter 객체 선언 
