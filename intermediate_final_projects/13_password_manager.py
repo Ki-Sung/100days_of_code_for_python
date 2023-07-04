@@ -1,5 +1,6 @@
 # 모듈 불러오기 
-from tkinter import * 
+from tkinter import *            # 모든 클래스와 상수만을 임포트 함
+from tkinter import messagebox   # messagebox는 또다른 코드 모듈이기 때문에 따로 임포트 해야함. 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 
@@ -11,10 +12,14 @@ def save():
     email = userid_input.get()           # user_id
     password = password_input.get()      # password 명 
     
-    with open("data/data.txt", "a") as data_file:                # "append"모드로 text 파일에 저장 
-        data_file.write(f"{website} | {email} | {password}\n")   # "write"모드로 data.text 파일 저장
-        website_input.delete(0, END)                             # 파일 저장 후 이전에 입력한 website 명을 삭제 
-        password_input.delete(0, END)                            # 파일 저장 후 이전에 입력한 password 삭제 
+    # messagebox 기능 추가 - 입려창에 입력 후 확인 팝업 생성 
+    is_ok = messagebox.askokcancel(title=website, message=f"These are the details entered: \nEmail: {email} "
+                                                        f"\nPassword: {password} \nIs it Ok to save?")
+    if is_ok:
+        with open("data/data.txt", "a") as data_file:                # "append"모드로 text 파일에 저장 
+            data_file.write(f"{website} | {email} | {password}\n")   # "write"모드로 data.text 파일 저장
+            website_input.delete(0, END)                             # 파일 저장 후 이전에 입력한 website 명을 삭제 
+            password_input.delete(0, END)                            # 파일 저장 후 이전에 입력한 password 삭제 
         
         
 # ---------------------------- UI SETUP ------------------------------- #
