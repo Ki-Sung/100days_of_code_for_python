@@ -1,9 +1,34 @@
 # 모듈 불러오기 
+from random import choice, randint, shuffle
 from tkinter import *            # 모든 클래스와 상수만을 임포트 함
 from tkinter import messagebox   # messagebox는 또다른 코드 모듈이기 때문에 따로 임포트 해야함. 
+import pyperclip                 # 클리보드 생성기 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
+# 비밀번호 생성 기능 만들기
+def generate_password():
+    # 비밀번호 조합을 위한 알파벳, 숫자, 기호들 
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 
+               'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 
+               'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 
+               'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+    numbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    symbols = ['!', '#', '$', '%', '&', '(', ')', '*', '+']
 
+    # password random 조합
+    password_letters = [choice(letters) for _ in range(randint(8, 10))]     # 알파벳 (대,소문자 상관 X) 8 ~ 10 글자 랜덤으로 추출 
+    password_symbols = [choice(symbols) for _ in range(randint(2, 4))]      # 기호 2 ~ 4 글자 랜덤으로 추출 
+    password_numbers = [choice(numbers) for _ in range(randint(2, 4))]      # 숫자 2 ~ 4 글자 랜덤으로 추출  
+
+    password_list = password_letters + password_symbols + password_numbers    # 알파벳, 기호, 숫자 조합하기 
+    shuffle(password_list)                                                    # 조합한 passwordlist 섞기 
+
+    password = "".join(password_list)                                       # list 형식을 join 함수를 사용하여 구분자("") 기준으로 문자열 형식으로 합치기 
+    password_input.insert(0, password)                                      # password Etry에 출력하기 
+    pyperclip.copy(password)                                                # 생성된 password를 복사 하기 위해 클립보드 생성 
+    # password = ""
+    # for char in password_list:
+    #     password += char
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 # 입력한 정보 저장 기능 함수 
 def save():
@@ -63,7 +88,7 @@ password_input = Entry(width=21)                      # input 3 설정
 password_input.grid(row=3, column=1)                  # input 3 설정 
 
 # buttons
-generate_button = Button(width=11, text="Generate Password")   # button 1 설정 
+generate_button = Button(width=11, text="Generate Password", command=generate_password)   # button 1 설정 
 generate_button.grid(row=3, column=2)                          # button 2 명시  
 
 add_button = Button(width=34, text="Add", command=save)        # button 2 설정 - Add 버튼 클릭시 save 함수 동작
