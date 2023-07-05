@@ -37,6 +37,7 @@
 - Nato Phonetic Alphabet
 - Mile To Km Converter
 - Pomodoro Timer
+- Password Manager
 
 ### Etc
 #### Usefull Generator
