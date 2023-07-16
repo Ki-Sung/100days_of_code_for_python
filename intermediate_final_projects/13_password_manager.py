@@ -67,6 +67,23 @@ def save():
         finally:    
             website_input.delete(0, END)                             # 파일 저장 후 이전에 입력한 website 명을 삭제 
             password_input.delete(0, END)                            # 파일 저장 후 이전에 입력한 password 삭제 
+            
+# ---------------------------- FIND PASSWORD ------------------------------- #
+# 저장된 Password 정보 검색 기능 함수 
+def find_password():
+    website = website_input.get()                                           # 저장된 website 명 입력 후 변수에 저장 
+    try:                                                                    # 만약 json 데이터가 있다면 
+        with open("data/data.json") as data_file:                           # json 데이터 불러오기 
+            data = json.load(data_file)                                          
+    except FileNotFoundError:                                               # 예외 처리 - 파일를 찾을 수 없다라는 에러가 발생하면  
+        messagebox.showinfo(title="Error", message="No Data File Found.")   # 에러 메시지 출력 
+    else:                                                                   # 위 코드 블록이 모두 실행되었다면 실행
+        if website in data:                                                 # 데이터 안에 입력한 웹사이트 정보가 있다면 
+            email = data[website]["email"]                                  # 이메일 변수에 저장 
+            password = data[website]["password"]                            # 비밀번호 변수에 저장 
+            messagebox.showinfo(title=website, message=f"Email: {email}\nPassword: {password}")  # 이메일, 비밀번호 팝업창에 출력 
+        else:                                                                               # 만약 입력된 웹사이트 정보가 없다면 
+            messagebox.showinfo(title="Error", message=f"No detail for {website} exists.")  # 정보가 없다는 에러 메시지 출력
 
 # ---------------------------- UI SETUP ------------------------------- #
 # 기본 설정 
@@ -91,8 +108,8 @@ password_label = Label(text="Password:")          # label 3 설정
 password_label.grid(row=3, column=0)              # label 3 명시 
 
 # Entries
-website_input = Entry(width=36)                       # input 1 설정 
-website_input.grid(row=1, column=1, columnspan=2)     # input 1 명시
+website_input = Entry(width=21)                       # input 1 설정 
+website_input.grid(row=1, column=1)                   # input 1 명시
 website_input.focus()                                 # 시작시 webside input box에 커서 자동 생성
 
 userid_input = Entry(width=36)                           # input 2 설정 
@@ -104,6 +121,8 @@ password_input = Entry(width=21)                      # input 3 설정
 password_input.grid(row=3, column=1)                  # input 3 설정 
 
 # buttons
+search_button = Button(width=11, text="Search", command=find_password)       # website 검색을 위한 Search 버튼 추가 
+search_button.grid(row=1, column=2)                                          # Search 버튼 위치 설정 
 generate_button = Button(width=11, text="Generate Password", command=generate_password)   # button 1 설정 
 generate_button.grid(row=3, column=2)                          # button 2 명시  
 
