@@ -3,7 +3,7 @@ from random import choice, randint, shuffle
 from tkinter import *            # 모든 클래스와 상수만을 임포트 함
 from tkinter import messagebox   # messagebox는 또다른 코드 모듈이기 때문에 따로 임포트 해야함. 
 import pyperclip                 # 클리보드 생성기 
-import json
+import json                      # json 모듈 불러오기 
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 # 비밀번호 생성 기능 만들기
@@ -50,16 +50,21 @@ def save():
     
     # 그외 
     else:
-        with open("data/data.json", "r") as data_file:               # "Read"모드로 json 파일에 읽기
-            # Reading old data
-            data = json.load(data_file)                              # json 데이터 읽기 -> 위에 with문에 "read" 모드인 "r"지정 
+        try:                                                             # 만약 json 파일이 있다면 
+            with open("data/data.json", "r") as data_file:               # "Read"모드로 json 파일에 읽기
+                # Reading old data
+                data = json.load(data_file)                              # json 데이터 읽기 -> 위에 with문에 "read" 모드인 "r"지정 
+        except FileNotFoundError:                                        # 만약 json 파일이 없다면, - 예외 처리 부분 
+            with open("data/daya.json", "w") as data_file:               # json 데이터 생성 
+                json.dump(new_data, data_file, indent=4)
+        else:                                                            # 위 코드블록이 모두 실행되면 
             # Update old data
-            data.update(new_data)                                    # 새로운 데이터로 업데이트 
+            data.update(new_data)                                        # 새로운 데이터로 업데이트 
             
-        with open("data/data.json", "w") as data_file:               # "Write"모드로 json 파일에 읽기
-            # Saving update data
-            json.dump(data, data_file, indent=4)                     # json 데이터 쓰기 -> json.dump - new_data 형식으로, 지정한 json 데이터 파일 쓰기, 4칸씩 들여쓰기 옵션으로
-            
+            with open("data/data.json", "w") as data_file:               # "Write"모드로 json 파일에 읽기
+                # Saving update data
+                json.dump(data, data_file, indent=4)                     # json 데이터 쓰기 -> json.dump - new_data 형식으로, 지정한 json 데이터 파일 쓰기, 4칸씩 들여쓰기 옵션으로
+        finally:    
             website_input.delete(0, END)                             # 파일 저장 후 이전에 입력한 website 명을 삭제 
             password_input.delete(0, END)                            # 파일 저장 후 이전에 입력한 password 삭제 
 
