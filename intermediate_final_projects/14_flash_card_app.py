@@ -7,12 +7,19 @@ from random import choice, randint, shuffle
 # ----------------------------- 상수 설정 ------------------------------- #
 BACKGROUND_COLOR = "#B1DDC6"
 FONT_NAME = "Ariel"
-
+current_card = {}                                         # next_card와 flib_card 두 함수에 사용할 현재 카드 빈 딕셔너리 형태
 # ------------------------- WORD GENERATOR ---------------------------- #
 # 데이터 불러오기 
-data = pd.read_csv("./data/English_Words.csv")            # 빈도 단어집 데이터 불러오기 
-to_learn = data.to_dict(orient="records")                 # 데이터 프레임을 딕셔너리 형태로 변환 - [{열 : 값}] 형태로 
 current_card = {}                                         # next_card와 flib_card 두 함수에 사용할 현재 카드 빈 딕셔너리 형태
+to_learn = {}                                             # 단어를 배운 (즉 아는 단어)를 저장하기 위한 빈 딕셔너리 
+
+try:                                                          # 만약 배워야할 단어가 있다면 
+    data = pd.read_csv("./data/word_to_learn.csv")            # 배울 단어 불러오기 
+except FileNotFoundError:                                     # 만약 배울 단어가 없다면 
+    original_data = pd.read_csv("./data/English_Words.csv")   # 원래의 단어 리스트 불러오기 
+    to_learn = original_data.to_dict(orient="record")         # 딕셔너리로 변환 
+else:                                                         # 만약 위의 코드블럭이 실행 완료되면 
+    to_learn = data.to_dict(orient="records")                 # 데이터 프레임을 딕셔너리 형태로 변환 - [{열 : 값}] 형태로 
 
 # Random하게 단어 카드 생성 함수 
 def next_card():
@@ -29,6 +36,13 @@ def flip_card():
     canvas.itemconfig(card_title, text="Korean", fill="white")                # 캔버스 위젯에 대한 옵션 수행 (title인 English 명시 )
     canvas.itemconfig(card_word, text=current_card["Korean"], fill="white")   # 캔버스 위젯에 대한 옵션 수행 (단어인 current_card에 있는 단어의 한국어 뜻 명시) 
     canvas.itemconfig(card_background, image=card_back_image)                 # 뒤 집은 카드 이미지로 전환 
+
+# 체크 버튼을 누르면 아는 단어라고 인식하고 따로 데이터를 저장하는 기능의 함수 
+def is_known():
+    to_learn.remove(current_card)                               # 알고 있는 해당 단어를 to_learn에서 제거 
+    data = pd.DataFrame(to_learn)                               # 삭제되고 나서 데이터 프레임으로 저장 
+    data.to_csv("./data/word_to_learn.csv", index=False)        # 저장된 데이터, csv로 저장 
+    next_card()                                                 # 랜덤하게 다음 단어 명시 
 
 # ---------------------------- UI SETUP ------------------------------- #
 # 기본 설정 
@@ -49,12 +63,12 @@ canvas.grid(column=0, row=0, columnspan=2)                                      
 
 # button 1 - wrong 버튼 
 cross_img = PhotoImage(file="./img/wrong.png")                  # 이미지 불러오기 
-unknown_button = Button(image=cross_img, highlightthickness=0, command=next_card)    # 이미지에 버튼 설정 (버튼을 누르면, 랜덤하게 단어 생성)
+unknown_button = Button(image=cross_img, highlightthickness=0, command=next_card)    # 이미지에 버튼 설정 (버튼을 누르면, 랜덤하게 다음 단어 생성)
 unknown_button.grid(column=0, row=1)                                # 버튼 명시 
 
 # button 2 - right 버튼 
 check_img = PhotoImage(file="./img/right.png")                  # 이미지 불러오기 
-known_button = Button(image=check_img, highlightthickness=0, command=next_card)    # 이미지에 버튼 설정 (버튼을 누르면, 랜덤하게 단어 생성)
+known_button = Button(image=check_img, highlightthickness=0, command=is_known)    # 이미지에 버튼 설정 (버튼을 누르면, 알고있는 단어라고 인식하고, 단어 삭제)
 known_button.grid(column=1, row=1)                                # 버튼 명시 
 
 # 위젯 화면에 바로 Title(English)과 단어가 보여질 수 있도록 명시 - 주의: mainloop() 전에 코드 작성
