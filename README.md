@@ -38,6 +38,7 @@
 - Mile To Km Converter
 - Pomodoro Timer
 - Password Manager
+- Flash Card App
 
 ### Etc
 #### Usefull Generator
