@@ -39,6 +39,8 @@
 - Pomodoro Timer
 - Password Manager
 - Flashy Card App
+- Motivate from Monday
+- Birthday Auto Mailing System
 
 ### Etc
 #### Usefull Generator
