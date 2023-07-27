@@ -1,102 +1,15 @@
-question_data = [
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "medium",
-        "question": "The HTML5 standard was published in 2014.",
-        "correct_answer": "True",
-        "incorrect_answers": [
-            "False"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "medium",
-        "question": "The first computer bug was formed by faulty wires.",
-        "correct_answer": "False",
-        "incorrect_answers": [
-            "True"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "medium",
-        "question": "FLAC stands for 'Free Lossless Audio Condenser'.",
-        "correct_answer": "False",
-        "incorrect_answers": [
-            "True"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "medium",
-        "question": "All program codes have to be compiled into an executable file in order to be run. This file can then be executed on any machine.",
-        "correct_answer": "False",
-        "incorrect_answers": [
-            "True"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "easy",
-        "question": "Linus Torvalds created Linux and Git.",
-        "correct_answer": "True",
-        "incorrect_answers": [
-            "False"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "easy",
-        "question": "The programming language 'Python' is based off a modified version of 'JavaScript'",
-        "correct_answer": "False",
-        "incorrect_answers": [
-            "True"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "medium",
-        "question": "AMD created the first consumer 64-bit processor.",
-        "correct_answer": "True",
-        "incorrect_answers": [
-            "False"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "easy",
-        "question": "'HTML' stands for Hypertext Markup Language.",
-        "correct_answer": "True",
-        "incorrect_answers": [
-            "False"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "easy",
-        "question": "In most programming languages, the operator ++ is equivalent to the statement '+= 1'.",
-        "correct_answer": "True",
-        "incorrect_answers": [
-            "False"
-        ]
-    },
-    {
-        "category": "Science: Computers",
-        "type": "boolean",
-        "difficulty": "hard",
-        "question": "The IBM PC used an Intel 8008 microprocessor clocked at 4.77 MHz and 8 kilobytes of memory.",
-        "correct_answer": "False",
-        "incorrect_answers": [
-            "True"
-        ]
-    }
-]
+# Trivia Database API를 이용해서 데이터 불러오기 
+
+# 모듈 불러오기 
+import requests
+
+# 파라미터 설정 
+prameters = {
+    "amount": 20,
+    "type": "boolean"
+}
+
+response = requests.get("https://opentdb.com/api.php", params=prameters)   # 앤드포인트로 요청 받기 
+response.raise_for_status()                                                # 응답코드 - 200이 아니면 예외를 발생 시킴 
+
+question_data = response.json()["results"]                                  # Trivia API에서 가져온 데이터 저장
