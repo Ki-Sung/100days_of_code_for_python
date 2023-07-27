@@ -13,7 +13,7 @@ class QuizBrain:                                    # QuizBrain 이라는 클래
     def __init__(self, q_list):                     # question_number, score(기본값이 0이기 때문에 여기서 생략), question_list, 두 속성을 초기화 하는 init 메소드 (입력 값 입력)
         self.question_list = q_list                 # 속성 설정 1. quiz 데이터를 뽑기 위한 "question_list"
         self.question_number = 0                    # 속성 설정 2. 문제 번호를 위한 "question_number"
-        self.score = 0                              # 솔성 설정 3. 점수를 메기기 위한 "score" 
+        self.score = 0                              # 속성 설정 3. 점수를 메기기 위한 "score" 
     
     # still_has_questions() - 뒤에 퀴즈가 남았는지 여부를 확인하는 기능
     def stil_has_question(self):
@@ -32,7 +32,7 @@ class QuizBrain:                                    # QuizBrain 이라는 클래
 
     # check_answer 메소드 - 유저가 입력한 값과 정답을 비교하여 점수를 체크하는 기능 
     def check_answer(self, user_answer, correct_answer):
-        if user_answer.lower() == correct_answer.lower():                        # 만약 유저가 입력한 정답과, 문제 정답이 같으면
+        if user_answer.lower() == correct_answer.lower():                # 만약 유저가 입력한 정답과, 문제 정답이 같으면
             self.score += 1                                              # 점수 1씩 증가 
             print("Right, You got it!!")                                 # 결과 출력 
         else:                                                            # 만약 다르다면
