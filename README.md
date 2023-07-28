@@ -41,6 +41,7 @@
 - Flashy Card App
 - Motivate from Monday
 - Birthday Auto Mailing System
+- Kanye Quote
 
 ### Etc
 #### Usefull Generator
