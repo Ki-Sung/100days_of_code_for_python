@@ -12,7 +12,7 @@ for question in question_data:
 
 
 quiz = QuizBrain(question_bank)
-quiz_ui = QuizInterface()       # UI의 QuizInterface 클래스 불러오기
+quiz_ui = QuizInterface(quiz)       # UI의 QuizInterface 클래스 불러오기
 
 # while quiz.still_has_questions():
 #     quiz.next_question()

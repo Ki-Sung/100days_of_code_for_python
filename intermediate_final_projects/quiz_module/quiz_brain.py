@@ -30,8 +30,12 @@ class QuizBrain:                                        # QuizBrain 이라는 �
         self.current_question = self.question_list[self.question_number]            # 현재 퀴즈 질문 - question_list[question_number]
         self.question_number += 1                                                   # 문제 번호 더하기 - 해당 설정을 하지 않으면, Q.0으로 넘버링이 됨 
         q_text = html.unescape(self.current_question.text)                          # question text 선언 후 html 언이스케이프
-        user_answer = input(f"Q.{self.question_number}: {q_text} (True/False): ")   # 입력할 정답 호출 
-        self.check_answer(user_answer)                                              # 입력할 정답의 값들을 check_answer로 전달 
+        
+        return f"Q.{self.question_number}: {q_text} (True/False): "                 # 입력할 정답 호출 
+    
+        # 콘솔창에 질문 출력용 
+        # user_answer = input(f"Q.{self.question_number}: {q_text} (True/False): ")   # 입력할 정답 호출 
+        # self.check_answer(user_answer)                                              # 입력할 정답의 값들을 check_answer로 전달 
 
     # check_answer 메소드 - 유저가 입력한 값과 정답을 비교하여 점수를 체크하는 기능 
     def check_answer(self, user_answer):
