@@ -34,19 +34,28 @@ class QuizInterface:
         self.canvas.grid(row=1, column=0, columnspan=2, pady=50)                  # grid로 명시 
         
         # buttons
-        ture_image = PhotoImage(file="./img/true.png")                            # true 버튼에 사용할 이미지 불러오기 
-        self.true_button = Button(image=ture_image, highlightthickness=0)         # 버튼 설정 - 이미지 설정 및 테두리 제거 
-        self.true_button.grid(row=2, column=0)                                    # grid로 명시 
+        ture_image = PhotoImage(file="./img/true.png")                                                       # true 버튼에 사용할 이미지 불러오기 
+        self.true_button = Button(image=ture_image, highlightthickness=0, command=self.true_pressed)         # 버튼 설정 - 이미지 설정 및 테두리 제거 
+        self.true_button.grid(row=2, column=0)                                                               # grid로 명시 
         
-        false_image = PhotoImage(file="./img/false.png")                          # false 버튼에 사용할 이미지 불러오기 
-        self.false_button = Button(image=false_image, highlightthickness=0)       # 버튼 설정 - 이미지 설정 및 테두리 제거 
-        self.false_button.grid(row=2, column=1)                                   # gird로 명시 
+        false_image = PhotoImage(file="./img/false.png")                                                    # false 버튼에 사용할 이미지 불러오기 
+        self.false_button = Button(image=false_image, highlightthickness=0, command=self.false_pressed)     # 버튼 설정 - 이미지 설정 및 테두리 제거 
+        self.false_button.grid(row=2, column=1)                                                             # gird로 명시 
         
         self.get_next_question()
         
         # 닫기 버튼을 누르기 전까지 계속 구동
         self.window.mainloop()
-        
+    
+    # 다음 질문을 출력하기 위한 메소드 
     def get_next_question(self):
         q_text = self.quiz.next_question()
         self.canvas.itemconfig(self.question_text, text=q_text)
+    
+    # True 버튼 동작 메소드 
+    def true_pressed(self):
+        self.quiz.check_answer("True")
+    
+    # False 버튼 동작 메소드 
+    def false_pressed(self):
+        self.quiz.check_answer("False")
