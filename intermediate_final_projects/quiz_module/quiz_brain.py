@@ -39,13 +39,9 @@ class QuizBrain:                                        # QuizBrain 이라는 �
 
     # check_answer 메소드 - 유저가 입력한 값과 정답을 비교하여 점수를 체크하는 기능 
     def check_answer(self, user_answer):
-        correct_answer = self.current_question.answer          
+        correct_answer = self.current_question.answer              # 정답 추출    
         if user_answer.lower() == correct_answer.lower():          # 만약 유저가 입력한 정답과, 문제 정답이 같으면
             self.score += 1                                        # 점수 1씩 증가 
-            print("You got it right!")                             # 결과 출력 
+            return True                                            # 결과 출력 
         else:                                                      # 만약 다르다면
-            print("That's wrong.")                                 # 결과 출력 
-
-        print(f"The correct answer was: {correct_answer}")                     # 문제의 정답 출력 
-        print(f"Your current score is: {self.score}/{self.question_number}")   # 점수 출력 
-        print("\n")                                                            # 다음 문제를 위해 줄 바꾸기 
+            return False                                           # 결과 출력 

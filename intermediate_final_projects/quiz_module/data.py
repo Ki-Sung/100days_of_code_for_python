@@ -6,7 +6,8 @@ import requests
 # 파라미터 설정 
 prameters = {
     "amount": 20,
-    "type": "boolean"
+    "type": "boolean",
+    # "categofy": number(int)
 }
 
 response = requests.get("https://opentdb.com/api.php", params=prameters)   # 앤드포인트로 요청 받기 

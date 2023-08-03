@@ -26,7 +26,7 @@ class QuizInterface:
         self.question_text = self.canvas.create_text(                             # text판 선언 
                                                     150,                          # x값 
                                                     125,                          # y값 
-                                                    width=280,
+                                                    width=280,                    # 넓이값 280
                                                     text="Some Question Text",    # Text 
                                                     fill=THEME_COLOR,             # 배경색상 
                                                     font=("Arial", 20, "italic")  # 폰트 설정 
@@ -42,20 +42,37 @@ class QuizInterface:
         self.false_button = Button(image=false_image, highlightthickness=0, command=self.false_pressed)     # 버튼 설정 - 이미지 설정 및 테두리 제거 
         self.false_button.grid(row=2, column=1)                                                             # gird로 명시 
         
-        self.get_next_question()
+        self.get_next_question()                                                  # 버튼을 누르면 다음 문제로 넘어가기 
         
         # 닫기 버튼을 누르기 전까지 계속 구동
         self.window.mainloop()
     
     # 다음 질문을 출력하기 위한 메소드 
     def get_next_question(self):
-        q_text = self.quiz.next_question()
-        self.canvas.itemconfig(self.question_text, text=q_text)
+        self.canvas.config(bg="white")                                             # 다음 문제로 넘어갈 시 배경 하얀색으로 계속 설정 
+        if self.quiz.still_has_questions():                                        # 만약 뒤에 퀴즈가 남아 있다면
+            self.score_label.config(text=f"Score: {self.quiz.score}")              # 점수 명시 
+            q_text = self.quiz.next_question()                                     # 질문 text 변수에 저장 
+            self.canvas.itemconfig(self.question_text, text=q_text)                # 질문 명시 
+        else:                                                                      # 만약 다음 문제가 없다면 
+            self.canvas.itemconfig(self.question_text, text="You've reached the end of the quiz!")   # 문제가 없다라는 문구 명시 
+            self.true_button.config(state="disabled")                              # 체크 버튼 (True) 버튼 비활성화 
+            self.false_button.config(state="disabled")                             # 엑스 버튼 (False) 버튼 비활성화 
     
     # True 버튼 동작 메소드 
     def true_pressed(self):
-        self.quiz.check_answer("True")
+        self.give_feedback(self.quiz.check_answer("True"))                         # 버튼을 누른다면 True 출력 
     
     # False 버튼 동작 메소드 
     def false_pressed(self):
-        self.quiz.check_answer("False")
+        is_right = self.quiz.check_answer("False")                                 # 버튼을 누른다면 False 출력 
+        self.give_feedback(is_right)
+    
+    # 화면에 피드백이 나오는 함수 
+    def give_feedback(self, is_right):
+        if is_right:                                                               # 만약 is_right(정답일 경우) 이면 
+            self.canvas.config(bg="green")                                         # 문제 창에 초록색 명시 
+        else:                                                                      # 만약 그 반대이면 
+            self.canvas.config(bg="red")                                           # 문제 창에 빨간색 명시 
+            
+        self.window.after(1000, self.get_next_question)                            # 다음 문제 출력 
