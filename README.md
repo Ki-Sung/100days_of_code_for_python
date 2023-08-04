@@ -42,6 +42,7 @@
 - Motivate from Monday
 - Birthday Auto Mailing System
 - Kanye Quote
+- Quizzler_app(Quiz Quiz Upgrade version)
 
 ### Etc
 #### Usefull Generator
