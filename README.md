@@ -43,6 +43,7 @@
 - Birthday Auto Mailing System
 - Kanye Quote
 - Quizzler_app(Quiz Quiz Upgrade version)
+- Auto Mail for Weather
 
 ### Etc
 #### Usefull Generator
