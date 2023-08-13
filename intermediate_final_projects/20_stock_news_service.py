@@ -9,29 +9,58 @@ from email.mime.multipart import MIMEMultipart  # email 모듈 메일의 데이�
 # dotenv 로드 
 load_dotenv(verbose=True)
 
+# Stock info - Tesla
 STOCK_NAME = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 
+# Endpoint
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 
-ALPHA_VANTAGE_API = os.getenv("ALPHA_VANTAGE_API")
-
-    ## STEP 1: Use https://www.alphavantage.co/documentation/#daily
+## STEP 1: Use https://www.alphavantage.co/documentation/#daily
 # When stock price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
+# solution 2
 
-#TODO 1. - Get yesterday's closing stock price. Hint: You can perform list comprehensions on Python dictionaries. e.g. [new_value for (key, value) in dictionary.items()]
+import requests 
 
-#TODO 2. - Get the day before yesterday's closing stock price
+STOCK_API_KEY = os.getenv("ALPHA_VANTAGE_API")
 
-#TODO 3. - Find the positive difference between 1 and 2. e.g. 40 - 20 = -20, but the positive difference is 20. Hint: https://www.w3schools.com/python/ref_func_abs.asp
+# Parameters 
+stock_params = {
+    "function": "TIME_SERIES_DAILY",
+    "symbol": STOCK_NAME,
+    "apikey": STOCK_API_KEY
+}
 
-#TODO 4. - Work out the percentage difference in price between closing price yesterday and closing price the day before yesterday.
+# 데이터 호출 및 응답 
+response = requests.get(STOCK_ENDPOINT, params=stock_params)   # 앤드포인트로 요청 받기
+response.raise_for_status()                                    #응답 코드 - 200이 아니면 예외를 발생 시킴  
 
-#TODO 5. - If TODO4 percentage is greater than 5 then print("Get News").
+data = response.json()["Time Series (Daily)"]                  # 200을 받으면 데이터 JSON 형식으로 받기
 
-    ## STEP 2: https://newsapi.org/ 
-    # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
+# 필요한 데이터 불러오기 
+data_list = [value for (key, value) in data.items()]           # data_list 불러오기 
+
+# 어제자 종가 데이터 불러오기 
+yesterday_data = data_list[0]                                  # 어제자 데이터 불러오기 
+yesterday_close_price = yesterday_data["4. close"]             # 어제자 종가 데이터 불러오기 
+print(yesterday_close_price)
+
+# 그제 종가 데이터 불러오기
+day_before_yesterday_data = data_list[1]                                   # 그제자 데이터 불러오기 
+day_before_yesterday_colse_price = day_before_yesterday_data["4. close"]   # 그제자 종가 데이터 불러오기 
+print(day_before_yesterday_colse_price)
+
+# 어제 폐장가와 엊그제 폐장가 비율 구하기 
+difference = abs(float(yesterday_close_price) - float(day_before_yesterday_colse_price))  # 어제 폐장가, 엊그제 폐장가 차이 구하기 (절대값으로)
+diff_percent = (difference / float(yesterday_close_price)) * 100                          # 퍼센트 비율 구하기 
+
+# 만약 페장가 비율이 4 퍼센트를 초과할 경우 get new 출력 
+if diff_percent > 4:
+    print("Get_news")
+
+## STEP 2: https://newsapi.org/ 
+# Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 
 #TODO 6. - Instead of printing ("Get News"), use the News API to get articles related to the COMPANY_NAME.
 
