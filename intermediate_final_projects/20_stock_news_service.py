@@ -24,6 +24,7 @@ NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 import requests 
 
 STOCK_API_KEY = os.getenv("ALPHA_VANTAGE_API")
+NEWS_API_KEY = os.getenv("NEWS_API")
 
 # Parameters 
 stock_params = {
@@ -55,16 +56,23 @@ print(day_before_yesterday_colse_price)
 difference = abs(float(yesterday_close_price) - float(day_before_yesterday_colse_price))  # 어제 폐장가, 엊그제 폐장가 차이 구하기 (절대값으로)
 diff_percent = (difference / float(yesterday_close_price)) * 100                          # 퍼센트 비율 구하기 
 
-# 만약 페장가 비율이 4 퍼센트를 초과할 경우 get new 출력 
-if diff_percent > 4:
-    print("Get_news")
-
 ## STEP 2: https://newsapi.org/ 
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 
-#TODO 6. - Instead of printing ("Get News"), use the News API to get articles related to the COMPANY_NAME.
-
-#TODO 7. - Use Python slice operator to create a list that contains the first 3 articles. Hint: https://stackoverflow.com/questions/509211/understanding-slice-notation
+# 만약 페장가 비율이 4 퍼센트를 초과할 경우 get new 출력 
+if diff_percent > 1:
+    # news_api_parameters
+    new_parameters = {
+        "apiKey": NEWS_API_KEY,
+        "qInTitle": COMPANY_NAME,
+    }
+    
+    news_response = requests.get(NEWS_ENDPOINT, params=new_parameters)    # 앤드포인트로 요청 받기
+    news_response.raise_for_status()                                      # 응답 코드 - 200이 아니면 예외를 발생 시킴 
+    article = news_response.json()["articles"]                            # 기사 데이터 응답 받기 
+    
+    three_articles = article[:3]                                          # 최신 기사 3개 불러오기 
+    print(three_articles)
 
 
     ## STEP 3: Use twilio.com/docs/sms/quickstart/python
