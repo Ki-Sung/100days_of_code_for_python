@@ -17,14 +17,14 @@ COMPANY_NAME = "Tesla Inc"
 STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
 
-## STEP 1: Use https://www.alphavantage.co/documentation/#daily
-# When stock price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
-# solution 2
-
-import requests 
-
+# my info 
 STOCK_API_KEY = os.getenv("ALPHA_VANTAGE_API")
 NEWS_API_KEY = os.getenv("NEWS_API")
+MY_EMAIL = os.getenv("MY_EMAIL")
+GOOGLE_APP_PASSWORD = os.getenv("GOOGLE_APP_PASSWORD")
+
+## STEP 1: Use https://www.alphavantage.co/documentation/#daily
+# When stock price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
 
 # Parameters 
 stock_params = {
@@ -53,14 +53,22 @@ day_before_yesterday_colse_price = day_before_yesterday_data["4. close"]   # 그
 print(day_before_yesterday_colse_price)
 
 # 어제 폐장가와 엊그제 폐장가 비율 구하기 
-difference = abs(float(yesterday_close_price) - float(day_before_yesterday_colse_price))  # 어제 폐장가, 엊그제 폐장가 차이 구하기 (절대값으로)
-diff_percent = (difference / float(yesterday_close_price)) * 100                          # 퍼센트 비율 구하기 
+difference = float(yesterday_close_price) - float(day_before_yesterday_colse_price)  # 어제 폐장가, 엊그제 폐장가 차이 구하기
+
+up_down = None
+
+if difference > 0:                                        # 만약 차이 값이 0보다 클 경우 
+    up_down = "🔺"                                        # 화살표 up 표시 
+else:                                                     # 만약 그 반대면 
+    up_down = "🔻"                                        # 화살표 아래 표시
+    
+diff_percent = round((difference / float(yesterday_close_price)) * 100)                          # 퍼센트 비율 구하기 
 
 ## STEP 2: https://newsapi.org/ 
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 
 # 만약 페장가 비율이 4 퍼센트를 초과할 경우 get new 출력 
-if diff_percent > 1:
+if abs(diff_percent) > 1:
     # news_api_parameters
     new_parameters = {
         "apiKey": NEWS_API_KEY,
@@ -72,16 +80,45 @@ if diff_percent > 1:
     article = news_response.json()["articles"]                            # 기사 데이터 응답 받기 
     
     three_articles = article[:3]                                          # 최신 기사 3개 불러오기 
-    print(three_articles)
 
 
     ## STEP 3: Use twilio.com/docs/sms/quickstart/python
     #to send a separate message with each article's title and description to your phone number. 
+    for i in range(0, 3):
+        msg_text =  f"{STOCK_NAME}: {up_down}{diff_percent}%<br>" \
+                    "<br>" \
+                    f"Brief: {three_articles[i]['content']}<br>" \
 
-#TODO 8. - Create a new list of the first 3 article's headline and description using list comprehension.
+        # SMTP 서버 접속  
+        connection = smtplib.SMTP("smtp.gmail.com", 587)                # SMTP 서버 연결 시작 
+        connection.starttls()                                           # TLS 암호화 
+        connection.login(user=MY_EMAIL, password=GOOGLE_APP_PASSWORD)   # SMTP 로그인 
 
-#TODO 9. - Send each article as a separate message via Twilio. 
+        # 수신인 이메일 주소 저장 - 여러 이메일 주소 
+        recipients = [MY_EMAIL]
 
+        str_from = MY_EMAIL                                              # 보내는 사람의 메일 주소 
+        str_to = ", ".join(recipients)                                   # 받는 사람의 메일 주소 - 여러 메일 주소 설정 
+        msg_root = MIMEMultipart("related")                              # 여러 MIME을 넣기위한 MIMEMultipart 객체 생성
+
+        msg_root["Subject"] = f"{three_articles[i]['title']}"                 # 메일 제목 설정 
+        msg_root["From"] = str_from                                        # 보내는 사람 
+        msg_root["To"] = str_to                                            # 받는 사람
+        msg_alternative = MIMEMultipart('alternative')                     # 메일에 파일을 보내기 위한 MIMEMultipart 객체 생성
+        msg_root.attach(msg_alternative)                                   # 선언된 MIMEMultipart 접근 
+        msg = MIMEText(msg_text, 'html', _charset="utf8")                  # 메일 본문 내용 작성 
+        msg_alternative.attach(msg)                                        # 작성된 메일 본문 접근 
+        
+        # 지정한 받는 사람 메일주소 별로 내용 전달 
+        for recipient in recipients:
+            connection.sendmail(
+                                from_addr=str_from,                  # 보내는 사람
+                                to_addrs=recipient,                  # 받는 사람 
+                                msg=msg_root.as_string()             # 메세지 내용
+                                )
+        
+        # SMTP 서버 종료 
+        connection.quit()
 
 
 #Optional TODO: Format the message like this: 
