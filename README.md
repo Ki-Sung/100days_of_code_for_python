@@ -44,9 +44,12 @@
 - Kanye Quote
 - Quizzler_app(Quiz Quiz Upgrade version)
 - Auto Mail for Weather
+- Auto Stock News Service
+- [Runnig Record by Pixela](https://pixe.la/v1/users/kisung/graphs/graph1.html)
 
 ### Etc
 #### Usefull Generator
 - [ASCII ART Generator](http://patorjk.com/software/taag/#p=display&f=Doom&t=Guess%20Number)
 - [Python Tutor](https://pythontutor.com/python-debugger.html#mode=edit)
 - [Open Trivia DataBase](https://opentdb.com/)
+- [Pixela](https://pixe.la/)
