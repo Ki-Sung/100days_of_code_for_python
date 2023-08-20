@@ -46,6 +46,7 @@
 - Auto Mail for Weather
 - Auto Stock News Service
 - [Runnig Record by Pixela](https://pixe.la/v1/users/kisung/graphs/graph1.html)
+- Record Workout System
 
 ### Etc
 #### Usefull Generator
