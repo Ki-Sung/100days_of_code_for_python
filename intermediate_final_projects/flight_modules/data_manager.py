@@ -34,8 +34,8 @@ class DataManager:
                 }
             }
             
-            response = requests.put(                           # 데이터를 수정하기 위해 PUT 방식으로 호출 
-            url=f"{SHEETY_PRICES_ENDPOINT}/{city['id']}",      # end point url 설정 
-            json=new_data                                      # 수정할 데이터 지정 
+            response = requests.put(                               # 데이터를 수정하기 위해 PUT 방식으로 호출 
+                url=f"{SHEETY_PRICES_ENDPOINT}/{city['id']}",      # end point url 설정 
+                json=new_data                                      # 수정할 데이터 지정 
             )
-            print(response.text)                               # 결과 출력 
+            print(response.text)                                    # 결과 출력 
