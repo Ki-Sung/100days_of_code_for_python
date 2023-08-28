@@ -26,4 +26,3 @@ for destination in sheet_data:
         from_time=tomorrow,                                        # 출발 날짜 
         to_time=six_month_from_today                               # 돌아오는 날짜 
     )
-
