@@ -48,6 +48,7 @@
 - [Runnig Record by Pixela](https://pixe.la/v1/users/kisung/graphs/graph1.html)
 - Record Workout System
 - Flight Row Price Finder
+- [My Resume Page](https://ki-sung.github.io/my_page/)
 
 ### Etc
 #### Usefull Generator
