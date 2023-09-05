@@ -1,13 +1,26 @@
 body {
     margin: 0px;
+    text-align: center;
+    font-family: Verdana, sans-serif;
 }
 
 h1 {
     margin-top: 0px;
+    font-family: 'Sacramento', cursive;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+h3 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 .top-container {
     background-color: #FFFFDD;
+    position: relative;
+    padding-top: 100px;
 }
 
 .middle-container {
@@ -20,4 +33,20 @@ h1 {
     height: 200px;
     width: 200px;
     background-color: blue;
+}
+
+.data {
+    text-decoration: underline;
+}
+
+.top-cloud {
+    position: absolute;
+    right: 300px;
+    top: 50px;
+}
+
+.bottom-cloud {
+    position: absolute;
+    left: 300px;
+    bottom: 300px;
 }
