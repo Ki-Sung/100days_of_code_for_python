@@ -1,20 +1,30 @@
 body {
     margin: 0px;
     text-align: center;
-    font-family: Verdana, sans-serif;
+    font-family: 'Merriweather', sans-serif;
 }
 
 h1 {
-    margin-top: 0px;
+    color: #A2C579;
+    font-size: 562.6%;   /* 16px = 100 % = 1m, 참고: %와 em은 상속이 가능함 */
+    margin-top: 50px auto 0 auto;
     font-family: 'Sacramento', cursive;
 }
 
 h2 {
+    color: #A2C579;
+    font-size: 2.5rem;
     font-family: 'Montserrat', sans-serif;
 }
 
+
 h3 {
+    color: #016A70;
     font-family: 'Montserrat', sans-serif;
+}
+
+a {
+    color: #016A70;
 }
 
 .top-container {
