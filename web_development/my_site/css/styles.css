@@ -8,6 +8,7 @@ h1 {
     color: #A2C579;
     font-size: 562.6%;   /* 16px = 100 % = 1m, 참고: %와 em은 상속이 가능함 */
     margin-top: 50px auto 0 auto;
+    line-height: 2;
     font-family: 'Sacramento', cursive;
 }
 
