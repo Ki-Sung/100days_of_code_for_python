@@ -8,7 +8,6 @@ h1 {
     color: #A2C579;
     font-size: 562.6%;   /* 16px = 100 % = 1m, 참고: %와 em은 상속이 가능함 */
     margin-top: 50px auto 0 auto;
-    line-height: 2;
     font-family: 'Sacramento', cursive;
 }
 
@@ -38,6 +37,25 @@ a {
 }
 
 .bottom-container {
+}
+
+.skill-row {
+    width: 50%;
+    margin: 100px auto 100px auto;
+    text-align: left;
+    line-height: 2;
+}
+
+.python {
+    width: 15%;
+    float: left;
+    margin-right: 30px;
+}
+
+.nodejs {
+    width: 15%;
+    float: right;
+    margin-left: 30px;
 }
 
 .data {
