@@ -29,6 +29,7 @@ sp = spotipy.Spotify(
 user_id = sp.current_user()["id"]     # 스포티파이 인증 ID 확인
 question = input("Which year do you want to travel to? Type the date in this format YYYY-MM-DD: ")    # 원하는 날짜 입력 
 
+print("Collecting Song")
 # 내가 원하는 날짜를 기준으로 빌보드 Hot 100에 있는 제목 스크래핑 하기 
 url = f"https://www.billboard.com/charts/hot-100/{question}/"                                         # 스크래핑 대상 url
 response = requests.get(url)                                                                          # 지정한 url로 요청받기
@@ -37,6 +38,8 @@ bilboard_page = response.text                                                   
 soup = BeautifulSoup(bilboard_page, "html.parser")                                                    # html 파싱 하기 
 music_title_spans = soup.select("li > ul > li > h3")                                                  # 빌보드 노래 타이틀 태그 추출 
 music_title = [title.getText().replace("\n", "").replace("\t", "") for title in music_title_spans]    # 타이틀 태그 기준 타이틀만 받아온 후 저장
+
+print("Collecting Done")
 
 # 스크래핑한 제목을 바탕으로 스포티파이 내 검색 후 uri 리스트 만들기 
 song_uris = []                                                                     # 결과를 저장하기 위한 빈 리스트 
@@ -51,4 +54,14 @@ for music in tqdm(music_title):
     except IndexError:                                                              # 만약 IndexError가 추출될 경우 
         print(f"{music} doesn't exist in Spotify. Skipped.")                         # 해당 음악은 검색이 없으므로 스킵하겠다라고 출력 후 예외처리
 
+# 플레리스트에 저장 
+# playlist 등록 
+playlist = sp.user_playlist_create(user=user_id,   # 유저 클라이언트 ID
+                                   name=f"{question} Billboard Hot 100",  # 플레이리스트 제목
+                                   public=False)     # 공개 여부   
 
+# playlist에 음악 저장
+sp.playlist_add_items(playlist_id=playlist["id"],   # 등록된 플레이리스트 id
+                      items=song_uris)              # 저장할 음악 uri
+
+print("Save to Playlist")
