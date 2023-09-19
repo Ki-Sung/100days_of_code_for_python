@@ -52,9 +52,12 @@
 - Music Time Machine
 
 ### Etc
-#### Usefull Generator
+#### Useful Generator
 - [ASCII ART Generator](http://patorjk.com/software/taag/#p=display&f=Doom&t=Guess%20Number)
 - [Python Tutor](https://pythontutor.com/python-debugger.html#mode=edit)
 - [Open Trivia DataBase](https://opentdb.com/)
 - [Pixela](https://pixe.la/)
 - [CSS Button Generator](https://css3buttongenerator.com/)
+#### Useful Site 
+- [Check My HTTP Header](https://myhttpheader.com/)
+- [CamelCamelCamel(Amazon Price Tracking)](https://camelcamelcamel.com/)
