@@ -50,6 +50,7 @@
 - Flight Row Price Finder
 - [My Resume Page](https://ki-sung.github.io/my_page/)
 - Music Time Machine
+- Amazon Price Tracker
 
 ### Etc
 #### Useful Generator
