@@ -62,3 +62,4 @@
 #### Useful Site 
 - [Check My HTTP Header](https://myhttpheader.com/)
 - [CamelCamelCamel(Amazon Price Tracking)](https://camelcamelcamel.com/)
+- [Check Internet Speed](https://www.speedtest.net/result/15337033867)
