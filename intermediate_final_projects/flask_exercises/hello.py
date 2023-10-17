@@ -2,10 +2,13 @@
 from flask import Flask
 app = Flask(__name__)
 
-# main 페이지 
+# main 페이지 - html 랜더링
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return '<h1 style="text-align: center">Hello, World!</h1>'\
+           '<p>This is a paragraph</p>'\
+            '<img src="https://media.giphy.com/media/gyRWkLSQVqlPi/giphy.gif" width=400>'
+            
 
 # bye 페이지 
 @app.route("/bye")
