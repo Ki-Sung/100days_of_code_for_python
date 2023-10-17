@@ -2,6 +2,28 @@
 from flask import Flask
 app = Flask(__name__)
 
+# 데코레이터 함수 만들기
+# 굴기 조절 html 데코레이터 함수 
+def make_bold(fuction):
+    # 중첩 함수
+    def wrapper():
+        return "<b>" + fuction() + "</b>"
+    return wrapper
+
+# 기울기 조절 html 데코레이터 함수
+def make_emphasis(fuction):
+    # 중첩 함수
+    def wrapper():
+        return "<em>" + fuction() + "</em>"
+    return wrapper
+
+# 밑줄 조절 html 데코레이터 함수
+def make_unerlined(fuction):
+    # 중첩 함수
+    def wrapper():
+        return "<u>" + fuction() + "</u>"
+    return wrapper
+    
 # main 페이지 - html 랜더링
 @app.route('/')
 def hello_world():
@@ -10,8 +32,11 @@ def hello_world():
             '<img src="https://media.giphy.com/media/gyRWkLSQVqlPi/giphy.gif" width=400>'
             
 
-# bye 페이지 
+# bye 페이지 - 데코레이터 함수 적용
 @app.route("/bye")
+@make_bold
+@make_emphasis
+@make_unerlined
 def say_bye():
     return 'Bye'
 
