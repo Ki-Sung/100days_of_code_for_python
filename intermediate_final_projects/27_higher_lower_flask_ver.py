@@ -7,17 +7,18 @@ app = Flask(__name__)
 
 # 타겟 넘버 랜덤으로 생성
 target_number = random.randint(0, 20)
+print(target_number)
 
 # main 페이지 - html 랜더링
 @app.route('/')              # 기본 주소 체계 
-def start_low_high():        # 위의 주소로 호출 시 웹에 보여지는 html
+def home():        # 위의 주소로 호출 시 웹에 보여지는 html
     html = '<h1>Guess a number between 0 and 20</h1>'\
             '<img src="https://media.giphy.com/media/3o7aCSPqXE5C6T8tBC/giphy.gif">'
     return html
 
 # URL에 컨버터 기능 추가 
 @app.route("/<int:number>")            # 기본 주소 체계(컨버터 기능 사용)
-def answer_number(number):             # 위의 주소로 호출 시 웹에 보여지는 html
+def guess_number(number):             # 위의 주소로 호출 시 웹에 보여지는 html
     if number < target_number:         # 만약 입력한 숫자가 타겟 숫자보다 적으면 아래 html 반환
         html = '<h1 style="color:red">Too low, Try again!</h1>'\
                 '<img src="https://media.giphy.com/media/jD4DwBtqPXRXa/giphy.gif">'
@@ -28,7 +29,7 @@ def answer_number(number):             # 위의 주소로 호출 시 웹에 보�
                 '<img src="https://media.giphy.com/media/3o6ZtaO9BZHcOjmErm/giphy.gif">'
         return html 
     
-    elif number == target_number:      # 만약 입력한 숫자와 타겟 숫자가 같으면
+    else:                               # 만약 입력한 숫자와 타겟 숫자가 같으면
         html = '<h1 style="color:green">Congratulations! You founde me!</h1>'\
                 '<img src="https://media.giphy.com/media/4T7e4DmcrP9du/giphy.gif">'
         return html
