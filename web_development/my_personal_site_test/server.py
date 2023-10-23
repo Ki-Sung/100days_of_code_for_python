@@ -12,6 +12,9 @@ app = Flask(__name__)
 def hello_world():
     return render_template("index.html")
 
+@app.route('/gilbert')
+def home():
+    return render_template("gilbert_site.html")
 
             
 if __name__ == '__main__':
