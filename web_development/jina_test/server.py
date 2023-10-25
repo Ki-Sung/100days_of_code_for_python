@@ -29,5 +29,13 @@ def guess(name):
     this_year = datetime.now().year
     return render_template("guess.html", person_name=name, gender=gender, age=age, year=this_year)
 
+# 블로그 포스트 내용 API 
+@app.route('/blog')
+def blog():
+    blog_url = "https://api.npoint.io/82bc7d5d46906ffb9ed4"
+    reponse = requests.get(blog_url)
+    all_posts = reponse.json()
+    return render_template("blog.html", posts=all_posts)
+
 if __name__ == '__main__':
     app.run(debug=True)
