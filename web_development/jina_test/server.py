@@ -30,8 +30,9 @@ def guess(name):
     return render_template("guess.html", person_name=name, gender=gender, age=age, year=this_year)
 
 # 블로그 포스트 내용 API 
-@app.route('/blog')
-def blog():
+@app.route('/blog/<number>')
+def get_blog(number):
+    print(number)
     blog_url = "https://api.npoint.io/82bc7d5d46906ffb9ed4"
     reponse = requests.get(blog_url)
     all_posts = reponse.json()
