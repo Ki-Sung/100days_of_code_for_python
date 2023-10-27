@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>My Blog Page</title>
     <link href="https://fonts.googleapis.com/css2?family=Raleway" rel="stylesheet">
     <link rel="stylesheet" href="../static/css/styles.css">
 </head>
@@ -11,20 +11,19 @@
     <div class="top">
         <div class="title"><h1>My Blog</h1></div>
     </div>
+
+    <!--Jinja 구문을 통한 멀티라인 사용 -->
+    {% for post in all_posts: %}
     <div class="content">
         <div class="card">
-            <h2>Just a blog post</h2>
-            <p class="text">Lorem ipsum dolor sit </p>
-            <a href="#">Read</a>
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.subtitle }}</p>
+            <!-- url_for 기입 영역 - 앵커링 태그에 하이퍼링크 호출 -->
+            <a href="{{ url_for('blog_post', blog_id=post.id ) }}">Read</a>
         </div>
     </div>
-    <div class="content">
-        <div class="card">
-            <h2>Another blog post</h2>
-            <p class="text">Lorem ipsum dolor sit </p>
-            <a href="#">Read</a>
-        </div>
-    </div>
+    {% endfor %}
+
 </div>
 </body>
 <footer>
