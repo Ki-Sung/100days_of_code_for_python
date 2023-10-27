@@ -51,6 +51,8 @@
 - [My Resume Page](https://ki-sung.github.io/my_page/)
 - Music Time Machine
 - Amazon Price Tracker
+- My Business Card Page
+- My Blog Page 
 
 ### Etc
 #### Useful Generator
