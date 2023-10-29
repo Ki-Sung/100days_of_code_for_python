@@ -51,6 +51,10 @@
 - [My Resume Page](https://ki-sung.github.io/my_page/)
 - Music Time Machine
 - Amazon Price Tracker
+- Automatic resume support bot in Linkedin
+- Tinder Auto Swipe bot
+- Instagram Follower bot
+- Music Time Machine by Spotify
 - My Business Card Page
 - My Blog Page 
 
