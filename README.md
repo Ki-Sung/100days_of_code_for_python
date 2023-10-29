@@ -65,11 +65,12 @@
 - [Open Trivia DataBase](https://opentdb.com/)
 - [Pixela](https://pixe.la/)
 - [CSS Button Generator](https://css3buttongenerator.com/)
+- [CodePen](https://codepen.io/)
+- [Codeply](https://www.codeply.com/)
 #### Useful Site 
 - [Check My HTTP Header](https://myhttpheader.com/)
 - [CamelCamelCamel(Amazon Price Tracking)](https://camelcamelcamel.com/)
 - [Check Internet Speed](https://www.speedtest.net/result/15337033867)
-- [CodePen](https://codepen.io/)
 - [GIPHY](https://giphy.com/)
 - [HTML5UP-Free HTML Template](https://html5up.net/)
 - [npoint-Free Build API Site](https://www.npoint.io/)
