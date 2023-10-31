@@ -77,3 +77,4 @@
 - [User Interface Design Patterns](https://ui-patterns.com/patterns)
 - [Dribbble - Web Design Ideas](https://dribbble.com/search/website)
 - [Sneakpeekit - Wireframe site](https://sneakpeekit.com/)
+- [Balsamiq - Wireframe site](https://balsamiq.com/)
