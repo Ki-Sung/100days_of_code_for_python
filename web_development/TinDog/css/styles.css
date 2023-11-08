@@ -138,3 +138,20 @@ h2 {
         transform: rotate(0);
     }
 }
+
+/* CTA Section */
+#cta {
+    background-color: #ff4c68;
+    color: #fff;
+}
+
+.cta-title {
+    font-family: 'Montserrat-Black', sans-serif;
+    text-align: center;
+}
+
+/* Footer Section */ 
+#footer{
+    background-color: #fff;
+    text-align: center;
+}
