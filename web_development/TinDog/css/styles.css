@@ -3,6 +3,8 @@ body {
     text-align: center;
 }
 
+/* CSS Selector -> id > class > tags */
+
 /* Container */
 .container-fluid {
     padding: 7% 15%;
