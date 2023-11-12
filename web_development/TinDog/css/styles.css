@@ -8,6 +8,16 @@ body {
     padding: 7% 15%;
 }
 
+/* Sections */
+.colored-section {
+    background-color: #ff4c68;
+    color: #fff;
+}
+
+.white-section {
+    background-color: #fff;
+}
+
 /* Multiple Selectors */
 h1, h2, h3, h4, h5, h6 {  
     font-family: 'Montserrat-Bold', sans-serif;
@@ -58,8 +68,6 @@ p {
 
 /* Title Section */
 #title {
-    background-color: #ff4c68;
-    color: #fff;
     text-align: left;
 }
 
@@ -78,7 +86,6 @@ p {
 
 /* Feature Section */
 #features {
-    background-color: #fff;
     position: relative;
     z-index: 1;
 }
@@ -103,7 +110,6 @@ p {
 /* Testimonial Section */
 #testimonials {
     background-color: #ef8172;
-    color: #fff;
 }
 
 .testimonial-text {
@@ -139,12 +145,6 @@ p {
 
 .pricing-column  {
     padding: 3% 2%;
-}
-
-/* CTA Section */
-#cta {
-    background-color: #ff4c68;
-    color: #fff;
 }
 
 /* Footer Section */ 
