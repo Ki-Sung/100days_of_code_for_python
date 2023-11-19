@@ -20,7 +20,7 @@
                 <!-- Post preview-->
                 {% for post in all_posts %}
                 <div class="post-preview">
-                    <a href="#">
+                    <a href="{{ url_for('blog_post', index=post.id) }}">
                         <h2 class="post-title">
                             {{post.title}}
                         </h2>
@@ -29,14 +29,12 @@
                         </h3>
                     </a>
                     <p class="post-meta">Posted by
-                        <a href="#!">{{post.author}}</a>
+                        <a href="#">{{post.author}}</a>
                         on {{post.date}}</p>
                 </div>
                 <hr class="my-4" />
 
                 {% endfor %}
-
-                <!-- Divider-->
 
                 <!-- Pager-->
                 <div class="d-flex justify-content-end mb-4"><a class="btn btn-primary text-uppercase" href="#!">Older Posts →</a></div>
