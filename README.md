@@ -58,6 +58,11 @@
 - My Business Card Page
 - My Blog Page 
 
+#### [Web Development](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/web_development)
+- My Blog with Flask
+- My Personal site - Resume site with Flask
+- Tindog site with Bootstrap
+
 ### Etc
 #### Useful Generator
 - [ASCII ART Generator](http://patorjk.com/software/taag/#p=display&f=Doom&t=Guess%20Number)
