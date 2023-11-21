@@ -37,9 +37,9 @@ def receive_data():
         print(data["email"])
         print(data["phone"])
         print(data["message"])
-        return "<h1>Successfully sent your message</h>"
+        return render_template("contact.html", msg_sent=True)
     
-    return render_template("contact.html")
+    return render_template("contact.html", msg_sent=False)
 
     
 
