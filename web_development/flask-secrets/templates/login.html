@@ -9,11 +9,11 @@
 		<h1>Login</h1>
         <!-- This is where our form will go. -->
 			<form action="/login" method="post">
-				<!-- Flask WTF로 CSRF 토큰 생성-->
+				<!-- jinja template 사용 -> Flask WTF로 CSRF 토큰 생성 -->
 				{{ form.csrf_token }} 
-				<!-- Flask WTF로 이메일 입력창 생성 - 30 글자로 제한-->
+				<!-- jinja template 사용 -> Flask WTF로 이메일 입력창 생성 - 30 글자로 제한-->
 				{{ form.email.label }} {{ form.email(size=30) }}
-				<!-- Flask WTF로 비밀번호 입력창 생성 - 30 글자로 제한-->
+				<!-- jinja template 사용 -> Flask WTF로 비밀번호 입력창 생성 - 30 글자로 제한-->
 				{{ form.password.label }} {{ form.password(size=30) }}
 				<input type="submit" value="Log In">
 			</form>
