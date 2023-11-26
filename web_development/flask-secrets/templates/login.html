@@ -6,17 +6,21 @@
 	</head>
 	<body>
         <div class="container">
-		<h1>Login</h1>
-        <!-- This is where our form will go. -->
-			<form action="/login" method="post">
-				<!-- jinja template 사용 -> Flask WTF로 CSRF 토큰 생성 -->
-				{{ form.csrf_token }} 
-				<!-- jinja template 사용 -> Flask WTF로 이메일 입력창 생성 - 30 글자로 제한-->
-				{{ form.email.label }} {{ form.email(size=30) }}
-				<!-- jinja template 사용 -> Flask WTF로 비밀번호 입력창 생성 - 30 글자로 제한-->
-				{{ form.password.label }} {{ form.password(size=30) }}
-				<input type="submit" value="Log In">
-			</form>
+			<h1>Login</h1>
+			<!-- This is where our form will go. -->
+				<form action="{{ url_for('login') }}" method="post">
+					<!-- jinja template 사용 -> Flask WTF로 CSRF 토큰 생성 -->
+					{{ form.csrf_token }} 
+					<p>
+						<!-- jinja template 사용 -> Flask WTF로 이메일 입력창 생성 - 30 글자로 제한-->
+						{{ form.email.label }} <br> {{ form.email(size=30) }}
+					</p>
+					<p>
+						<!-- jinja template 사용 -> Flask WTF로 비밀번호 입력창 생성 - 30 글자로 제한-->
+						{{ form.password.label }} <br> {{ form.password(size=30) }}
+					</p>
+					{{ form.submit }}
+				</form>
         </div>
 	</body>
 </html>
