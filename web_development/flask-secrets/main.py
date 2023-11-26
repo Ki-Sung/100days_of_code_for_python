@@ -12,9 +12,14 @@ def home():
     return render_template('index.html')      # index.html을 랜더링 함 
 
 # login 화면 체계 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login():
     login_form = LoginForm()                  # 로그인 정합성 검사를 위한 LoginForm 클래스 선언 
+    if login_form.validate_on_submit():           # POST 메소드 요청에 응답후 데이터를 유효성 검사로 검증
+        if login_form.email.data == "admin@email.com" and login_form.password.data == "12345678":
+            return render_template('succenss.html')
+        else:
+            return render_template('denied.html')
     return render_template('login.html', form=login_form)   # login.html을 랜더링
 
 # 앱 실행 
