@@ -3,6 +3,13 @@
 <head>
     <meta charset="utf-8">
     <title>{% block title %}{% endblock %}</title>
+    <style>
+        {% block styling %}
+        body {
+            background-color: purple;
+        }
+        {% endblock %}
+    </style>
 </head>
 <body>
     {% block content %}{% endblock %}

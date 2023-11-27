@@ -16,11 +16,11 @@ def home():
 def login():
     login_form = LoginForm()                  # 로그인 정합성 검사를 위한 LoginForm 클래스 선언 
     if login_form.validate_on_submit():           # POST 메소드 요청에 응답후 데이터를 유효성 검사로 검증
-        if login_form.email.data == "admin@email.com" and login_form.password.data == "12345678":
-            return render_template('succenss.html')
-        else:
-            return render_template('denied.html')
-    return render_template('login.html', form=login_form)   # login.html을 랜더링
+        if login_form.email.data == "admin@email.com" and login_form.password.data == "12345678":  # 로그인 test를 위해 임시 아이디, 비밀번호 설정 만약 입력한 정보가 일치하면
+            return render_template('success.html')                                                 # succes.html을 랜딩
+        else:                                                                                      # 로그인이 실패하면 
+            return render_template('denied.html')                                                  # denined.html을 랜딩
+    return render_template('login.html', form=login_form)                                          # login.html을 랜더링
 
 # 앱 실행 
 if __name__ == '__main__':
