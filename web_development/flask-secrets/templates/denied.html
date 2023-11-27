@@ -1,16 +1,8 @@
-<!-- 동일한 html form base.html에서 불러오기 -->
-{% extends "base.html" %}
+<!-- 부트스트랩 불러오기 -->
+{% extends 'bootstrap/base.html' %}
 
 <!-- 타이틀 태그 jinja 템플릿 대입 -->
 {% block title %}Access Denied{% endblock %}
-
-<!-- style 태그 jinja 템플릿 대입 -> 슈퍼 블록 추가 -->
-{% block styling %}
-	{{ super() }}
-	h1 {
-		color: red;
-	}
-{% endblock %}
 
 <!-- content 블록 jinja 템플릿 대입 -->
 {% block content %}

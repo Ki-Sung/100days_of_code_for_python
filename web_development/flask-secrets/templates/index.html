@@ -1,15 +1,18 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-	<title>Secrets</title>
-</head>
-<body>
+<!-- 부트스트랩 불러오기 -->
+{% extends 'bootstrap/base.html' %}
+
+<!-- 타이틀 태그 jinja 템플릿 대입 -->
+{% block title %}Secrets{% endblock %}
+
+<!-- content 블록 jinja 템플릿 대입 -->
+{% block content %}
 <div class="jumbotron">
 	<div class="container">
 		<h1>Welcome</h1>
 		<p>Are you ready to discover my secret?</p>
-		<button class="btn btn-primary btn-lg" href="/login">Login</button>
+		<form action="{{ url_for('login') }}" method="get">
+			<button class="btn btn-primary btn-lg" type="submit">Login</button>
+		</form>
 	</div>
 </div>
-</body>
-</html>
+{% endblock %}

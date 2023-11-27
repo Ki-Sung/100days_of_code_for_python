@@ -1,8 +1,13 @@
 from flask import Flask, render_template
+from flask_bootstrap import Bootstrap
 from form import LoginForm
 
 # 플라스크 실행을 위해 객체 선언
 app = Flask(__name__)
+
+# 플라스크 부트스트랩 대입 
+Bootstrap(app)
+
 # CSRF 보호 기능을 위한 토큰울 위한 비밀키 생성 
 app.secret_key = "secret"
 
