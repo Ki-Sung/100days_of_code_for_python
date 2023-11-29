@@ -1,24 +1,27 @@
+<!-- bootstrap/base.html의 탬플릿 상속 - flask bootstrap 사용 -->
 {% extends 'bootstrap/base.html' %}
 
-{% block title %}Restaurants{% endblock %}
+<!-- block 정의 - Tab 제목 정의 -->
+{% block title %}Cafes List{% endblock %}
 
+<!-- block 정의 - style 정의 -->
 {% block styles %}
+  <!-- super를 이용하여 css 파일 포함 -->
   {{ super() }}
   <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
 {% endblock %}
 
+<!-- block 정의 - content 정의 -->
 {% block content %}
-
 <div class="container">
   <div class="row">
     <div class="col-sm-12">
 
       <h1>All Cafes</h1>
+      <!-- Add Cafe page 버튼 클릭시 "/add" 경로로 리다이렉션 -->
       <p><a href="{{ url_for('add_cafe') }}">Add Cafe page</a></p>
         <table class="table">
-              <!-- This is where you will write the code to render a Bootstrap 
-              Table that contains all the information from the 
-              cafe-data.csv file. -->
+          <!-- Table Header (컬럼) 정의 -->
           <thead>
             <tr>
               <th>Cafe Name</th>
@@ -30,9 +33,12 @@
               <th>Power</th>
             </tr>
           </thead>
+          <!-- Table body (본문) 정의 -->
           <tbody>
+            <!-- cafe 데이터 해더를 제외하고 반복 출력 -->
             {% for cafe in cafes[1:] %}
               <tr>
+                <!-- Table row (로우) 데이터 넣기 -->
                 <td>{{ cafe[0] }}</td>
                 <td><a href="{{ cafe[1] }}" target="_blank">Maps Link</a></td>
                 <td>{{ cafe[2] }}</td>
@@ -44,11 +50,10 @@
             {% endfor %}
           </tbody>
         </table>
-
-      <p><a href="{{ url_for('home') }}">Return to index page</a></p>
+      <!-- Return to Home 버튼 클릭시 "/" 경로로 리다이렉션 -->
+      <p><a href="{{ url_for('home') }}">Return to Home</a></p>
 
     </div>
   </div>
 </div>
-
 {% endblock %}

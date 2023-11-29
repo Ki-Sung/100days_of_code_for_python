@@ -1,12 +1,17 @@
+<!-- bootstrap/base.html의 탬플릿 상속 - flask bootstrap 사용 -->
 {% extends 'bootstrap/base.html' %}
 
+<!-- block 정의 - Tab 제목 정의 -->
 {% block title %}Coffee and Wifi{% endblock %}
 
+<!-- block 정의 - style 정의 -->
 {% block styles %}
+  <!-- super를 이용하여 css 파일 포함 -->
   {{ super() }}
     <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
   {% endblock %}
-  
+
+<!-- block 정의 - content 정의 -->
 {% block content %}
 <div class="jumbotron text-center">
     <div class="container">
@@ -14,8 +19,8 @@
   <p class="lead">Want to work in a cafe but need power and wifi?</p>
   <hr class="my-4">
   <p>You've found the right place! Checkout my collection of cafes with data on power socket availability, wifi speed and coffee quality.</p>
+  <!-- Show Me! 버튼 클릭시 "/add" 경로로 리다이렉션 -->
   <a class="btn btn-warning btn-lg" href="{{ url_for('cafes') }}" role="button">Show Me!</a>
 </div>
     </div>
-
 {% endblock %}

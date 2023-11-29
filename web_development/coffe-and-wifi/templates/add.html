@@ -1,12 +1,20 @@
+<!-- bootstrap/base.html의 탬플릿 상속 - flask bootstrap 사용 -->
 {% extends 'bootstrap/base.html' %}
 
+<!--부트스트랩의 WTForm 임포트 - 한 줄로 복잡한 코드를 작성해 줌 -->
+{% import "bootstrap/wtf.html" as wtf %}
+
+<!-- block 정의 - Tab 제목 정의 -->
 {% block title %}Add A New Cafe{% endblock %}
 
+<!-- block 정의 - style 정의 -->
 {% block styles %}
+  <!-- super를 이용하여 css 파일 포함 -->
   {{ super() }}
   <link rel="stylesheet" href="{{url_for('.static', filename='css/styles.css')}}">
 {% endblock %}
 
+<!-- block 정의 - content 정의 -->
 {% block content %}
 <div class="container">
   <div class="row">
@@ -14,8 +22,10 @@
 
       <h1>Add a new cafe into the database</h1>
 
-      <!-- This is where your WTForm will go -->
+      <!-- WTForms(CafeForm 클래스) 대입 -->
+      {{ wtf.quick_form(form) }}
 
+    <!-- See all cafes 버튼 클릭시 "/cafes" 경로로 리다이렉션 -->
 	  <p class="space-above"><a href="{{ url_for('cafes') }}">See all cafes</a></p>
 
     </div>
