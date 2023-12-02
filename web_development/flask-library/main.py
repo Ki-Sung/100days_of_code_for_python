@@ -1,4 +1,3 @@
-import sqlite3
 from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 
@@ -7,9 +6,6 @@ app = Flask(__name__)       # Flask 객체 선언
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///new-books-collection.db'   # sqlite DB Url 지정
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False                          # 콘솔에서 SQLALCHEMY_TRACK_MODIFICATIONS과 관련된 사용 중지 경고 표시 X 
 db = SQLAlchemy(app)                                                          # DB 객체 선언 
-
-## book 정보 - Database 역할
-all_books = []
 
 ## 데이터 베이스 정의 - SQLite3
 # 데이터베이스 연결 - 만약 데이터 베이스가 존재하지 않으면 생성
@@ -35,31 +31,59 @@ class Book(db.Model):
     rating = db.Column(db.Float, nullable=False)                       # 컬럼 설정 - rating: float, Null 값 허용 X
 
 # 만약 데이터 베이스가 없다면 생성
-with app.app_context():
-    db.create_all()                                                             # 지정된 DB생성 
+db.create_all()                                                             # 지정된 DB생성 
     
-    # 데이터 추가 
-    new_book = Book(title="Harry Potter", author="J. K. Rowling", rating=9.3)
-    db.session.add(new_book)
-    db.session.commit()
+## CRUD
+# Create - 데이터 추가
+# new_book = Book(title="Harry Potter", author="J. K. Rowling", rating=9.3)
+# db.session.add(new_book)
+# db.session.commit()
+
+# Read - 데이터 전체 읽기
+# all_books = db.session.query(Book).all()
+
+# Read - 특정 데이터 읽기
+# book = Book.query.filter_by(title="Harry Potter").first()
+
+# Update - 쿼리별 데이터 업데이트하기
+# book_to_update = Book.query.filter_by(title="Harry Potter").first()
+# book_to_update.title = "Harry Potter and the Chamber of Secrets"
+# db.session.commit()
+
+# Update - 기본키로 데이터 업데이트 하기
+# book_id = 1
+# book_to_update = Book.query.get(book_id)
+# book_to_update.title = "Harry Potter and the Goblet of Fire"
+# db.session.commit()
+
+# Delete - 기본키로 특정 데이터 삭제 
+# book_id = 1
+# book_to_delete = Book.query.get(book_id)
+# db.session.delete(book_to_delete)
+# db.session.commit()
+
 
 ## 모든 라우터를 정의
 # Home Page - url 체계: http://127.0.0.1:5000/
 @app.route('/')
 def home():
-    return render_template("index.html", all_books=all_books)
+    # books = Book.query.all()
+    books = db.session.query(Book).all()
+    return render_template("index.html", books=books)
 
 # Add book Page - url 체계 - http://127.0.0.1:5000/add
 @app.route("/add", methods=["GET", "POST"])
 def add():
     if request.method == "POST":                      # 만약 메소드가 POST일 경우 
-        # 새로운 book 데이터 저장
-        new_book = {
-            "title": request.form["title"],           # book 제목 
-            "author": request.form["author"],         # 작가명
-            "rating": request.form["rating"]          # book 평가 
-        }
-        all_books.append(new_book)                    # 입력한 데이터 all_books에 저장
+        # 새로운 book 데이터 생성 
+        new_book = Book(
+            title=request.form["title"],
+            author=request.form["author"],
+            rating=request.form["rating"]
+        ) 
+        # 데이터 베이스에 추가
+        db.session.add(new_book)
+        db.session.commit()
         
         return redirect(url_for("home"))              # 저장 후 Home으로 리다이렉션
         

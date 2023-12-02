@@ -6,11 +6,11 @@
 </head>
 <body>
 <h1>My Library</h1>
-    {% if all_books == []: %}
+    {% if books | length == 0: %}
         <p>Library is empty.</p>
     {% else %}
         <ul>
-            {% for book in all_books %}
+            {% for book in books %}
                 <li>{{ book.title }} - {{ book.author }} - {{ book.rating }}/10</li>
             {% endfor %}
         </ul>
