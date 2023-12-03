@@ -68,8 +68,8 @@ db.create_all()                                                             # �
 @app.route('/')
 def home():
     # books = Book.query.all()
-    books = db.session.query(Book).all()
-    return render_template("index.html", books=books)
+    books = db.session.query(Book).all()                # DB에 저장 된 데이터 모두 불러오기 
+    return render_template("index.html", books=books)   # 불러온 데이터 페이지에 랜딩
 
 # Add book Page - url 체계 - http://127.0.0.1:5000/add
 @app.route("/add", methods=["GET", "POST"])
@@ -77,9 +77,9 @@ def add():
     if request.method == "POST":                      # 만약 메소드가 POST일 경우 
         # 새로운 book 데이터 생성 
         new_book = Book(
-            title=request.form["title"],
-            author=request.form["author"],
-            rating=request.form["rating"]
+            title=request.form["title"],              # 도서 제목
+            author=request.form["author"],            # 도서 작가 
+            rating=request.form["rating"]             # 도서 평점
         ) 
         # 데이터 베이스에 추가
         db.session.add(new_book)
@@ -89,6 +89,28 @@ def add():
         
     return render_template("add.html")                # add.html 랜딩
 
+# Edit Rate Page - url 체계: http://127.0.0.1:5000/eidit?id=1
+@app.route("/edit", methods=["GET", "POST"])
+def edit():
+    if request.method == "POST":                         # 만약 메소드가 POST일 경우 
+        # 데이터 베이스에 변동 사항  업데이터
+        book_id = request.form["id"]                     # 쿼리로 book id 지정
+        book_to_update = Book.query.get(book_id)         # 지정된 book id 기준 데이터 불러오기 
+        book_to_update.rating = request.form["rating"]   # book id 기준으로 불러온 데이터 중 평점 데이터 수정
+        db.session.commit()                              # 변동사항 커밋 
+        return redirect(url_for("home"))                 # 변동 버튼 클릭 후 홈으로 리다이렉팅
+    
+    # 요청 메소드가 GET일 경우 실행
+    book_id = request.args.get("id")                         # 쿼리 매개변수에서 id 값을 가져옴
+    book_selected = Book.query.get(book_id)                  # 가져온 id를 사용하여 DB에 해당하는 도서 가져오기
+    return render_template("edit.html", book=book_selected)  # 가져온 도서 정보를 사용하여 edit.html 템플릿을 랜더링 하고 해당 템플릿에 book 변수로 전달
+
+# # Delete book list 
+# @app.route("/delete"):
+# def delete():
+#     book_id = request.args.get("id")
+        
+        
 
 if __name__ == "__main__":
     app.run(debug=True)
