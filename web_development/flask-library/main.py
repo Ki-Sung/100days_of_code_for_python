@@ -106,11 +106,16 @@ def edit():
     return render_template("edit.html", book=book_selected)  # 가져온 도서 정보를 사용하여 edit.html 템플릿을 랜더링 하고 해당 템플릿에 book 변수로 전달
 
 # # Delete book list 
-# @app.route("/delete"):
-# def delete():
-#     book_id = request.args.get("id")
+@app.route("/delete")
+def delete():
+    book_id = request.args.get("id")                    # 쿼리로 book id 지정
         
-        
+    # book_id 기준 데이터 삭제하기 
+    book_to_delete = Book.query.get(book_id)            # 지정된 book id 기준 데이터 불러오기 
+    db.session.delete(book_to_delete)                   # 데이터 삭제
+    db.session.commit()                                 # 변동사항 커밋
+    
+    return redirect(url_for("home"))                    # 삭제 버튼 클릭 후 홈으로 리다이렉팅
 
 if __name__ == "__main__":
     app.run(debug=True)
