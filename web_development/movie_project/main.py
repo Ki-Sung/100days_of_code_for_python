@@ -18,13 +18,13 @@ db = SQLAlchemy(app)
 # 데이터 베이스 내 테이블 정의
 class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), unique=True, nullable=False)
-    year = db.Column(db.Integer, unique=True, nullable=False)
-    description = db.Column(db.String(100), unique=True, nullable=False)
-    rating = db.Column(db.Float, unique=True, nullable=False)
-    ranking = db.Column(db.Integer, unique=True, nullable=False)
-    review = db.Column(db.String(100), unique=True, nullable=False)
-    img_url = db.Column(db.String(100), unique=True, nullable=False)
+    title = db.Column(db.String(250), unique=True, nullable=False)
+    year = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(500), nullable=False)
+    rating = db.Column(db.Float, nullable=True)
+    ranking = db.Column(db.Integer, nullable=True)
+    review = db.Column(db.String(250), nullable=True)
+    img_url = db.Column(db.String(250), nullable=False)
 
 db.create_all()
 
