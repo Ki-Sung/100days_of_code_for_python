@@ -5,6 +5,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
 import requests
+from form import RateMovieForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
@@ -47,6 +48,20 @@ def home():
     movies = db.session.query(Movie).all()
     return render_template("index.html", movies=movies)
 
+@app.route("/edit", methods=["GET", "POST"])
+def rate_movie():
+    form = RateMovieForm()
+    movie_id = request.args.get("id")
+    movie = Movie.query.get(movie_id)
+    if form.validate_on_submit():
+        movie.rating = float(form.rating.data)
+        movie.review = form.review.data
+        db.session.commit()
+        
+        return redirect(url_for("home"))
+    
+    return render_template("edit.html", movie=movie, form=form)
+        
 # @app.route("/add", methods=["GET", "POST"])
 # def add():
 #     if request.method == "POST":
