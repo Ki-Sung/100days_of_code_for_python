@@ -66,6 +66,16 @@ def rate_movie():
         return redirect(url_for("home"))                   # 커밋 완료 후 Home Page로 리다이렉션
     
     return render_template("edit.html", movie=movie, form=form)   # 지정한 HTML template를 렌더링 및 클라이언트 요청에 대한 응답으로 반환 
+
+# Delete 기능 - 선택한 영화 데이터 삭제 
+@app.route("/delete")
+def delete_movie():
+    movie_id = request.args.get("id")                      # DB id 기준 데이터 조회 
+    movie = Movie.query.get(movie_id)                     # id 기준 데이터 조회 
+    db.session.delete(movie)                               # 조회된 데이터 삭제 
+    db.session.commit()                                    # 삭제 완료 후 DB에 커밋
+    
+    return redirect(url_for("home"))                       # 삭제 버튼 클릭 후 홈으로 리다이렉팅
         
 # @app.route("/add", methods=["GET", "POST"])
 # def add():
