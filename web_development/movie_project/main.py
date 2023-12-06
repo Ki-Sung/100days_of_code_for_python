@@ -4,17 +4,18 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField
 from wtforms.validators import DataRequired
-import requests
+
 from form import RateMovieForm
 
-app = Flask(__name__)
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
-Bootstrap(app)
+# Falsk 선언 
+app = Flask(__name__)                                            # 플라스크 실행을 위해 객체 선언
+app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'    # CSRF 보호 기능을 위한 토큰울 위한 비밀키 생성 
+Bootstrap(app)                                                   # 플라스크 부트스트랩 대입 
 
 # DB 생성 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///movie.db'     # sqlite DB URL 지정
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False             # 콘솔에서 SQLALCHEMY_TRACK_MODIFICATIONS과 관련된 사용 중지 경고 표시 X 
+db = SQLAlchemy(app)                                             # DB 객체 선언
 
 # 데이터 베이스 내 테이블 정의
 class Movie(db.Model):
@@ -37,30 +38,34 @@ db.create_all()
 #     rating=7.3,
 #     ranking=10,
 #     review="My favourite character was the caller.",
-#     img_url="https://en.wikipedia.org/wiki/File:Phone_Booth_movie.jpg"
+#     img_url="https://www.themoviedb.org/t/p/original/t4w6KSB5Zhfo6MFNlYjKT0L2Pno.jpg"
 # )
 # db.session.add(new_movie)
 # db.session.commit()
 
-
+## 모든 라우터를 정의 
+# Home Page - url 체계: http://127.0.0.1:5000/
 @app.route("/")
 def home():
-    movies = db.session.query(Movie).all()
-    return render_template("index.html", movies=movies)
+    movies = db.session.query(Movie).all()                # DB에 저장 된 데이터 모두 불러오기 
+    return render_template("index.html", movies=movies)   # 불러온 데이터 페이지에 랜딩
 
+# Edite Page - 평점과 리뷰 변경 페이지 - http://127.0.0.1:5000/edit
 @app.route("/edit", methods=["GET", "POST"])
 def rate_movie():
-    form = RateMovieForm()
-    movie_id = request.args.get("id")
-    movie = Movie.query.get(movie_id)
-    if form.validate_on_submit():
-        movie.rating = float(form.rating.data)
-        movie.review = form.review.data
-        db.session.commit()
-        
-        return redirect(url_for("home"))
+    form = RateMovieForm()                                 # WTForm 인 RateMovieForm 클래스 선언 
+    movie_id = request.args.get("id")                      # DB id 기준 데이터 조회 
+    movie = Movie.query.get(movie_id)                      # id 기준 데이터 조회 
     
-    return render_template("edit.html", movie=movie, form=form)
+    # 데이터 조회 후 유효성 검사로 검증 - 만약 사용자가 입력한 양식 데이터가 유효한 경우 유효한 양식 제줄(한 마디로 DB에 수정 데이터 저장)
+    if form.validate_on_submit():                          
+        movie.rating = float(form.rating.data)             # rating 필드에 입력된 값 추출 후 부동 소수점으로 변환
+        movie.review = form.review.data                    # review 필드에 입력된 값 추출 후 movie 개체의 review 속성에 할당
+        db.session.commit()                                # 변경된 사항 DB에 커밋
+        
+        return redirect(url_for("home"))                   # 커밋 완료 후 Home Page로 리다이렉션
+    
+    return render_template("edit.html", movie=movie, form=form)   # 지정한 HTML template를 렌더링 및 클라이언트 요청에 대한 응답으로 반환 
         
 # @app.route("/add", methods=["GET", "POST"])
 # def add():
