@@ -1,9 +1,7 @@
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
-from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from form import RateMovieForm, FindMovieForm
 
 from form import RateMovieForm
 
@@ -71,30 +69,17 @@ def rate_movie():
 @app.route("/delete")
 def delete_movie():
     movie_id = request.args.get("id")                      # DB id 기준 데이터 조회 
-    movie = Movie.query.get(movie_id)                     # id 기준 데이터 조회 
+    movie = Movie.query.get(movie_id)                      # id 기준 데이터 조회 
     db.session.delete(movie)                               # 조회된 데이터 삭제 
     db.session.commit()                                    # 삭제 완료 후 DB에 커밋
     
     return redirect(url_for("home"))                       # 삭제 버튼 클릭 후 홈으로 리다이렉팅
-        
-# @app.route("/add", methods=["GET", "POST"])
-# def add():
-#     if request.method == "POST":
-#         new_movie = Movie(
-#             title=request.form["title"],
-#             year=request.form["year"],
-#             description=request.form["description"],
-#             rating=request.form["rating"],
-#             ranking=request.form["ranking"],
-#             review=request.form["review"],
-#             img_url=request.form["img_url"]
-#         )
-#         db.session.add(new_movie)
-#         db.session.commit()
-        
-#         return redirect(url_for("home"))
-    
-#     return render_template("add.html")
+
+# Add 기능 - 영화 데이터 추가
+@app.route("/add", methods=["GET", "POST"])
+def add_movive(): 
+    form = FindMovieForm()                                # 영화 제목 추가 양식 클래스 선언
+    return render_template("add.html", form=form)         # add.html에 템플릿 랜더링
 
 
 if __name__ == '__main__':
