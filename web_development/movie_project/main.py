@@ -1,9 +1,17 @@
+import os
+from dotenv import load_dotenv
+import requests
 from flask import Flask, render_template, redirect, url_for, request
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from form import RateMovieForm, FindMovieForm
 
 from form import RateMovieForm
+
+load_dotenv(verbose=True)
+
+MOVIE_DB_SEARCH_URL = os.getenv('MOVIE_DB_SEARCH_URL')
+MOVIE_DB_API_KEY = os.getenv('MOVIE_DB_API_KEY')
 
 # Falsk 선언 
 app = Flask(__name__)                                            # 플라스크 실행을 위해 객체 선언
@@ -79,7 +87,22 @@ def delete_movie():
 @app.route("/add", methods=["GET", "POST"])
 def add_movive(): 
     form = FindMovieForm()                                # 영화 제목 추가 양식 클래스 선언
-    return render_template("add.html", form=form)         # add.html에 템플릿 랜더링
+    
+    # 데이터 조회 후 유효성 검사로 검증 - 만약 사용자가 입력한 양식 데이터가 유효한 경우 유효한 양식 제줄(한 마디로 DB에 수정 데이터 저장)
+    if form.validate_on_submit():
+        movie_title = form.title.data                     # 영화 타이틀 
+        # TMDB API 호출 받기 
+        response = requests.get(
+                                MOVIE_DB_SEARCH_URL,                   # TMDB API Endpoint URL 설정
+                                params={                              
+                                        "api_key": MOVIE_DB_API_KEY,   # 파라미터 설정 - TMDB API Key 설정
+                                        "query": movie_title           # 파라미터 설정 - 영화 제목 검색 설정
+                                        }
+                                )
+        data = response.json()["results"]                              # 응답 받은 데이터 Json으로 출력
+        return render_template("select.html", options=data)            # 응답 받은 데이터 select.html 화면에 랜더링
+    
+    return render_template("add.html", form=form)                      # add.html에 템플릿 랜더링
 
 
 if __name__ == '__main__':

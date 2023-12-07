@@ -10,5 +10,5 @@ class RateMovieForm(FlaskForm):
 
 # Flask-WTF로 영화 제목 추가 양식 만들기 
 class FindMovieForm(FlaskForm):
-    movie_title = StringField("Movie Title", validators=[DataRequired()])
+    title = StringField("Movie Title", validators=[DataRequired()])
     submit = SubmitField("Add Movie")
