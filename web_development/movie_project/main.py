@@ -11,6 +11,7 @@ from form import RateMovieForm
 load_dotenv(verbose=True)
 
 MOVIE_DB_SEARCH_URL = os.getenv('MOVIE_DB_SEARCH_URL')
+MOVIE_DB_MOVIE_URL = os.getenv("MOVIE_DB_MOVIE_URL")
 MOVIE_DB_API_KEY = os.getenv('MOVIE_DB_API_KEY')
 
 # Falsk 선언 
@@ -34,20 +35,8 @@ class Movie(db.Model):
     review = db.Column(db.String(250), nullable=True)
     img_url = db.Column(db.String(250), nullable=False)
 
+# 테이블이 없을 시 생성 
 db.create_all()
-
-# 더미 데이터 - 실행하고 주석 처리하기 
-# new_movie = Movie(
-#     title="Phone Booth",
-#     year=2002,
-#     description="Publicist Stuart Shepard finds himself trapped in a phone booth, pinned down by an extortionist's sniper rifle. Unable to leave or receive outside help, Stuart's negotiation with the caller leads to a jaw-dropping climax.",
-#     rating=7.3,
-#     ranking=10,
-#     review="My favourite character was the caller.",
-#     img_url="https://www.themoviedb.org/t/p/original/t4w6KSB5Zhfo6MFNlYjKT0L2Pno.jpg"
-# )
-# db.session.add(new_movie)
-# db.session.commit()
 
 ## 모든 라우터를 정의 
 # Home Page - url 체계: http://127.0.0.1:5000/
@@ -99,11 +88,34 @@ def add_movive():
                                         "query": movie_title           # 파라미터 설정 - 영화 제목 검색 설정
                                         }
                                 )
-        data = response.json()["results"]                              # 응답 받은 데이터 Json으로 출력
+        data = response.json()["results"]                              # 응답 받은 데이터 결과 Json으로 출력
         return render_template("select.html", options=data)            # 응답 받은 데이터 select.html 화면에 랜더링
     
     return render_template("add.html", form=form)                      # add.html에 템플릿 랜더링
 
+# Movie 검색 기능 - 영화 데이터 추가를 위한 검색 기능
+@app.route("/find")
+def find_movie():
+    movie_api_id = request.args.get("id")                               # 영화 API ID 검색 - 쿼리 매개변수에서 영화 APi ID를 가져옴 
+    if movie_api_id:                                                    # 만약 영화 API ID가 있다면
+        movie_api_url = f"{MOVIE_DB_MOVIE_URL}/{movie_api_id}"          # Movie 서칭 엔드포인트와 찾고자 하는 영화 ID로 API URL 지정
+        # TMDB API 호출 받기 
+        response = requests.get(                                        
+                                movie_api_url,                          # TMDB API Endpoint URL 설정 - 영화 서치 API 
+                                params={"api_key": MOVIE_DB_API_KEY,    # 파라미터 설정 - TMDB API Key 설정
+                                        "language": "ko"}               # 파라미터 설정 - 언어 설정
+                                )    
+        data = response.json()                                          # 응답 받은 데이터 결과 Json으로 출력
+        # 응답 받은 데이터 기준으로 DB에 넣어야할 데이터 설정 
+        new_movie = Movie(
+            title = data["title"],                                                      # 영화 제복 
+            year = data["release_date"].split("-")[0],                                  # 영화 개봉 년도 
+            img_url = "https://www.themoviedb.org/t/p/w1280" + data["poster_path"],     # 포스터 URL 
+            descroption = data["overview"]                                              # 영화 설명 (줄거리 설명)
+        )
+        db.session.add(new_movie)                                                       # 조회된 데이터 추가 
+        db.session.commit()                                                             # 수정사항 커밋 
+        return redirect(url_for("index"))                                               # 저장 후 Home 페이지로 리다이렉팅
 
 if __name__ == '__main__':
     app.run(debug=True)
