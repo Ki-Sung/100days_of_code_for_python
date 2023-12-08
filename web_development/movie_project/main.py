@@ -111,11 +111,11 @@ def find_movie():
             title = data["title"],                                                      # 영화 제복 
             year = data["release_date"].split("-")[0],                                  # 영화 개봉 년도 
             img_url = "https://www.themoviedb.org/t/p/w1280" + data["poster_path"],     # 포스터 URL 
-            descroption = data["overview"]                                              # 영화 설명 (줄거리 설명)
+            description = data["overview"]                                              # 영화 설명 (줄거리 설명)
         )
         db.session.add(new_movie)                                                       # 조회된 데이터 추가 
         db.session.commit()                                                             # 수정사항 커밋 
-        return redirect(url_for("index"))                                               # 저장 후 Home 페이지로 리다이렉팅
+        return redirect(url_for("home"))                                               # 저장 후 Home 페이지로 리다이렉팅
 
 if __name__ == '__main__':
     app.run(debug=True)
