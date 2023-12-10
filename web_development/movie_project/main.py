@@ -115,7 +115,8 @@ def find_movie():
         )
         db.session.add(new_movie)                                                       # 조회된 데이터 추가 
         db.session.commit()                                                             # 수정사항 커밋 
-        return redirect(url_for("home"))                                               # 저장 후 Home 페이지로 리다이렉팅
+        
+        return redirect(url_for("rate_movie", id=new_movie.id))                                               # 저장 후 Home 페이지로 리다이렉팅
 
 if __name__ == '__main__':
     app.run(debug=True)
