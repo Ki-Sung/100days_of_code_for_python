@@ -42,8 +42,13 @@ db.create_all()
 # Home Page - url 체계: http://127.0.0.1:5000/
 @app.route("/")
 def home():
-    movies = db.session.query(Movie).all()                # DB에 저장 된 데이터 모두 불러오기 
-    return render_template("index.html", movies=movies)   # 불러온 데이터 페이지에 랜딩
+    all_movies = Movie.query.order_by(Movie.rating).all()               # DB에 저장 된 데이터 모두 불러오기 
+    
+    for i in range(len(all_movies)):
+        all_movies[i].ranking = len(all_movies) - i
+        
+    db.session.commit()
+    return render_template("index.html", movies=all_movies)   # 불러온 데이터 페이지에 랜딩
 
 # Edite Page - 평점과 리뷰 변경 페이지 - http://127.0.0.1:5000/edit
 @app.route("/edit", methods=["GET", "POST"])
