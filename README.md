@@ -85,3 +85,4 @@
 - [Sneakpeekit - Wireframe site](https://sneakpeekit.com/)
 - [Balsamiq - Wireframe site](https://balsamiq.com/)
 - [Adobe Color - color wheel](https://color.adobe.com/ko/create/color-wheel)
+- [Daily UI - Better Designer in 100 Days](https://www.dailyui.co/)
