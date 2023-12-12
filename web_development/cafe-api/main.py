@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+import random
 
 app = Flask(__name__)
 
@@ -27,9 +28,19 @@ class Cafe(db.Model):
 @app.route("/")
 def home():
     return render_template("index.html")
-    
 
 ## HTTP GET - Read Record
+@app.route("/random")
+def get_random_cafe():
+    cafes = db.session.query(Cafe).all()
+    random_cafe = random.choice(cafes)
+    return jsonify(name=random_cafe.name,
+                   map_url=random_cafe.map_url,
+                   img_url=random_cafe.img_url,
+                   location=random_cafe.location,
+                   seats=random_cafe.seats,
+                   )
+
 
 ## HTTP POST - Create Record
 
