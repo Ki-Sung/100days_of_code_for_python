@@ -59,12 +59,14 @@ def get_all_cafes():
 # 위치 매개변수를 기반으로 카페를 검색하는 page - url 체계: http://127.0.0.1:5000/search?loc={cafe name}
 @app.route("/search")
 def search_cafes():
-    query_location = request.args.get("loc")
-    cafe = db.session.query(Cafe).filter_by(location=query_location).first()
+    query_location = request.args.get("loc")                                     # 사용자가 입력한 검색어를 query_location 변수에 저장
+    cafe = db.session.query(Cafe).filter_by(location=query_location).first()     # DB에서 사용자가 입력한 위치와 일치한느 카페를 조회 
+    
+    # 조회된 카페가 있는지 확인 
     if cafe:
-        return jsonify(cafe=cafe.to_dict())
+        return jsonify(cafe=cafe.to_dict())                                       # 만약 조회된 카페가 있다면 해당 카페의 정보를 JSON 형식으로 응답 
     else:
-        return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})
+        return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})   # 만약 없다면 해당 위치에 카페가 없다는 에러 메시지를 JSON 형식으로 응답
 
 ## HTTP POST - Create Record
 
