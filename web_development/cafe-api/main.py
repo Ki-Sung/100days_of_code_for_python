@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 import random
+from form import AddCafeForm
 
 app = Flask(__name__)
 
@@ -69,6 +70,23 @@ def search_cafes():
         return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})   # 만약 없다면 해당 위치에 카페가 없다는 에러 메시지를 JSON 형식으로 응답
 
 ## HTTP POST - Create Record
+@app.route("/add", methods=["POST"])
+def add_cafe():
+    new_cafe = Cafe(
+        name=request.form.get("name"),
+        map_url=request.form.get("map_url"),
+        img_url=request.form.get("img_url"),
+        location=request.form.get("loc"),
+        has_sockets=bool(request.form.get("sockets")),
+        has_toilet=bool(request.form.get("toilet")),
+        has_wifi=bool(request.form.get("wifi")),
+        can_take_calls=bool(request.form.get("calls")),
+        seats=request.form.get("seats"),
+        coffee_price=request.form.get("coffee_price"),
+    )
+    db.session.add(new_cafe)
+    db.session.commit()
+    return jsonify(response={"success": "Successfully added the new cafe."})
 
 ## HTTP PUT/PATCH - Update Record
 
