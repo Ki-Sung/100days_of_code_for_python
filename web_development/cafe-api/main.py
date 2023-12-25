@@ -11,19 +11,19 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 
-## Cafe 테이블 구성
+## SQLAlchemy ORM을 사용하여 Cafe 테이블 구성
 class Cafe(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(250), unique=True, nullable=False)
-    map_url = db.Column(db.String(500), nullable=False)
-    img_url = db.Column(db.String(500), nullable=False)
-    location = db.Column(db.String(250), nullable=False)
-    seats = db.Column(db.String(250), nullable=False)
-    has_toilet = db.Column(db.Boolean, nullable=False)
-    has_wifi = db.Column(db.Boolean, nullable=False)
-    has_sockets = db.Column(db.Boolean, nullable=False)
-    can_take_calls = db.Column(db.Boolean, nullable=False)
-    coffee_price = db.Column(db.String(250), nullable=True)
+    id = db.Column(db.Integer, primary_key=True)                        # id는 정수형(Integer)의 기본 키(primary key) 컬럼, 각 카페는 고유한 ID를 가지고 있으며, 이 열은 테이블에서 기본 키로 사용
+    name = db.Column(db.String(250), unique=True, nullable=False)       # name은 문자열(String) 형식의 최대 길이가 250인 컬럼, 각 카페 이름은 고유한 값을 가져야하며, not null 설정
+    map_url = db.Column(db.String(500), nullable=False)                 # map_url은 문자열(String) 형식의 최대 길이가 500인 컬럼, 지도 URL을 저장, not null 설정
+    img_url = db.Column(db.String(500), nullable=False)                 # img_url은 문자열(String) 형식의 최대 길이가 500인 컬럼, 이미지 URL을 저장, not null 설정
+    location = db.Column(db.String(250), nullable=False)                # location은 문자열(String) 형식의 최대 길이가 250인 컬럼, 카페 위치 저장, not null 설정 
+    seats = db.Column(db.String(250), nullable=False)                   # seats는 문자열(String) 형식의 최대 길이가 250인 컬럼, 카페 좌석 정보 저장, not null 설정 
+    has_toilet = db.Column(db.Boolean, nullable=False)                  # has_toilet는 부울(Boolean) 형식의 컬럼, 카페 화장실 여부 저장, not null 설정 
+    has_wifi = db.Column(db.Boolean, nullable=False)                    # has_wifi는 부울(Boolean) 형식의 컬럼, 카페 와이파이 여부 저장, not null 설정 
+    has_sockets = db.Column(db.Boolean, nullable=False)                 # has_sockets는 부울(Boolean) 형식의 컬럼, 카페에 전기 소켓(콘센트)이 있는지 여부 저장, not null 설정 
+    can_take_calls = db.Column(db.Boolean, nullable=False)              # can_take_calls는 부울(Boolean) 형식의 컬럼, 카페에서 전화를 받을 수 있는지 여부 저장, not null 설정 
+    coffee_price = db.Column(db.String(250), nullable=True)             # coffee_price는 문자열(String) 형식의 최대 길이가 250인 컬럼, 커피 가격 정보 저장, null 값 허용
 
     # mothod 정의 - cafe 객체를 딕셔너리로 변환하는 역할 (이렇게 하면 딕셔너리로 반환하여 JSON 형태로 반환하는 작업이 용이해짐)
     def to_dict(self):
