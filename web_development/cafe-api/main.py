@@ -90,20 +90,33 @@ def add_cafe():
     return jsonify(response={"success": "Successfully added the new cafe."})    # JSON 형식의 응답을 반환 - 만약 성공시 지정한 메시지를 출력 
 
 # HTTP PUT/PATCH - Update Record
-# 카페 id 기준으로 데이터를 불러온 뒤 커피 가격 업데이트 - http://127.0.0.1:5000/add/update-price/<int:cafe_id>
+# 카페 id 기준으로 데이터를 불러온 뒤 커피 가격 업데이트 - url 체계: http://127.0.0.1:5000/update-price/<int:cafe_id>
 @app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
 def update_price(cafe_id):
-    new_price = request.args.get("new_price")                   # PATCH 요청의 쿼리 문자열에서 "new_price" 키 값을 가져와 "new_price" 변수에 할당 
-    cafe = db.session.query(Cafe).get(cafe_id)                  # "cafe_id"에 해당하는 카페를 DB에서 조회 
-    if cafe:                                                    # 조회된 카페가 존재할 경우 
-        cafe.coffee_price = new_price                               # 조회된 카페의 "coffe_price" 필드를 새로운 가격인 "new_price"로 업데이트 
-        db.session.commit()                                         # 변동사항 DB에 커밋
-        return jsonify(response={"success": "Successfully updated the cafe price."})    # JSON 형식의 응답을 반환 - 만약 성공시 지정한 메시지를 출력 
-    else:                                                       # 조회된 카페가 없을 경우
+    new_price = request.args.get("new_price")                                           # PATCH 요청의 쿼리 문자열에서 "new_price" 키 값을 가져와 "new_price" 변수에 할당 
+    cafe = db.session.query(Cafe).get(cafe_id)                                          # "cafe_id"에 해당하는 카페를 DB에서 조회 
+    if cafe:                                                                            # 조회된 카페가 존재할 경우 
+        cafe.coffee_price = new_price                                                       # 조회된 카페의 "coffe_price" 필드를 새로운 가격인 "new_price"로 업데이트 
+        db.session.commit()                                                                 # 변동사항 DB에 커밋
+        return jsonify(response={"success": "Successfully updated the cafe price."})        # JSON 형식의 응답을 반환 - 만약 성공시 지정한 메시지를 출력 
+    else:                                                                               # 조회된 카페가 없을 경우
         return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."})     # JSON 형식의 응답을 반환 - 에러 응답 메시지를 출력 
 
 ## HTTP DELETE - Delete Record
-
+# 카페 id 기준으로 데이터를 불러온 뒤 해당 카페 정보 모두 삭제 - url 체계: http://127.0.0.1:5000/report-closed/<int:cafe_id>
+@app.route("/report-closed/<int:cafe_id>", methods=["DELETE"])
+def delete_cafe(cafe_id):
+    api_key = request.args.get("api-key")                                               # DELETE 요청의 쿼리 문자열에서 "api-key" 키의 값을 가져와서 api_key 변수에 할당
+    if api_key == "TopSecretAPIKey":                                                    # 가져온 api_key가 "TopSecretAPIKey"와 같은 경우
+        cafe = db.session.query(Cafe).get(cafe_id)                                      # cafe_id에 해당하는 카페를 데이터베이스에서 조회
+        if cafe:                                                                                                    # 조회된 카페가 존재하는 경우 
+            db.session.delete(cafe)                                                                                 # 조회된 카페를 DB에서 삭제 
+            db.session.commit()                                                                                     # 변경 사항 DB에 커밋 
+            return jsonify(response={"success": "Successfully deleted the cafe from the database."}), 200           # JSON 형식의 응답을 반환 - 만약 성공시 지정한 메시지를 출력 
+        else:                                                                                                       # 조회된 카페가 없는 경우  
+            return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."}), 404    # 에러 내용 JSON 형식으로 응답 변환 - 404 에러도 함꼐 응답 
+    else:                                                                                                               # api_key가 "TopSecretAPIKey"가 아닌 경우 
+        return jsonify(error={"Forbidden": "Sorry, that's not allowed. Make sure you have the correct api_key."}), 403  # 에러 내용 JSON 형식으로 응답 변환 - 403 에러도 함꼐 응답 
 
 if __name__ == '__main__':
     app.run(debug=True)
