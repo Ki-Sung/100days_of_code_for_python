@@ -69,38 +69,38 @@ def search_cafes():
     else:
         return jsonify(error={"Not Found": "Sorry, we don't have a cafe at that location."})   # 만약 없다면 해당 위치에 카페가 없다는 에러 메시지를 JSON 형식으로 응답
 
-## HTTP POST - Create Record
+# HTTP POST - Create Record
+# 새로운 카페 추가 - url 체계: http://127.0.0.1:5000/add
 @app.route("/add", methods=["POST"])
 def add_cafe():
-    new_cafe = Cafe(
-        name=request.form.get("name"),
-        map_url=request.form.get("map_url"),
-        img_url=request.form.get("img_url"),
-        location=request.form.get("loc"),
-        has_sockets=bool(request.form.get("sockets")),
-        has_toilet=bool(request.form.get("toilet")),
-        has_wifi=bool(request.form.get("wifi")),
-        can_take_calls=bool(request.form.get("calls")),
-        seats=request.form.get("seats"),
-        coffee_price=request.form.get("coffee_price"),
+    new_cafe = Cafe(                                              # Cafe 모델을 이용하여 새로운 카페 데이터 생성 
+        name=request.form.get("name"),                              # "name"의 키 값을 가져와 "new_cafe"의 "name" 필드에 설정 
+        map_url=request.form.get("map_url"),                        # "map_url"의 키 값을 가져와 "new_cafe"의 "map_url" 필드에 설정 
+        img_url=request.form.get("img_url"),                        # "img_url"의 키 값을 가져와 "new_cafe"의 "img_url" 필드에 설정 
+        location=request.form.get("loc"),                           # POST 요청으로 전달된 "loc" 키 값을 가져와 "new_cafe"의 "location" 필드에 설정 
+        has_sockets=bool(request.form.get("sockets")),              # POST 요청으로 전달된 "sockets" 키의 값을 가져와서 new_cafe의 "has_sockets" 필드에 설정
+        has_toilet=bool(request.form.get("toilet")),                # POST 요청으로 전달된 "toilet" 키의 값을 가져와서 new_cafe의 "has_toilet" 필드에 설정
+        has_wifi=bool(request.form.get("wifi")),                    # POST 요청으로 전달된 "wifi" 키의 값을 가져와서 new_cafe의 "has_wifi" 필드에 설정
+        can_take_calls=bool(request.form.get("calls")),             # POST 요청으로 전달된 "calls" 키의 값을 가져와서 new_cafe의 "can_take_calls" 필드에 설정
+        seats=request.form.get("seats"),                            # POST 요청으로 전달된 "seats" 키의 값을 가져와서 new_cafe의 "seats" 필드에 설정
+        coffee_price=request.form.get("coffee_price"),              # POST 요청으로 전달된 "coffee_price" 키의 값을 가져와서 new_cafe의 "coffee_price" 필드에 설정
     )
-    db.session.add(new_cafe)
-    db.session.commit()
-    return jsonify(response={"success": "Successfully added the new cafe."})
+    db.session.add(new_cafe)                                                    # SQLAlchemy의 세션에 새로운 카페 데이터 추가
+    db.session.commit()                                                         # 변동 사항 DB에 커밋
+    return jsonify(response={"success": "Successfully added the new cafe."})    # JSON 형식의 응답을 반환 - 만약 성공시 지정한 메시지를 출력 
 
-## HTTP PUT/PATCH - Update Record
+# HTTP PUT/PATCH - Update Record
+# 카페 id 기준으로 데이터를 불러온 뒤 커피 가격 업데이트 - http://127.0.0.1:5000/add/update-price/<int:cafe_id>
 @app.route("/update-price/<int:cafe_id>", methods=["PATCH"])
 def update_price(cafe_id):
-
-    new_price = request.args.get("new_price")
-    cafe = db.session.query(Cafe).get(cafe_id)
-    if cafe:
-        cafe.coffee_price = new_price
-        db.session.commit()
-        
-        return jsonify(response={"success": "Successfully updated the cafe price."})
-    else:
-        return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."})
+    new_price = request.args.get("new_price")                   # PATCH 요청의 쿼리 문자열에서 "new_price" 키 값을 가져와 "new_price" 변수에 할당 
+    cafe = db.session.query(Cafe).get(cafe_id)                  # "cafe_id"에 해당하는 카페를 DB에서 조회 
+    if cafe:                                                    # 조회된 카페가 존재할 경우 
+        cafe.coffee_price = new_price                               # 조회된 카페의 "coffe_price" 필드를 새로운 가격인 "new_price"로 업데이트 
+        db.session.commit()                                         # 변동사항 DB에 커밋
+        return jsonify(response={"success": "Successfully updated the cafe price."})    # JSON 형식의 응답을 반환 - 만약 성공시 지정한 메시지를 출력 
+    else:                                                       # 조회된 카페가 없을 경우
+        return jsonify(error={"Not Found": "Sorry a cafe with that id was not found in the database."})     # JSON 형식의 응답을 반환 - 에러 응답 메시지를 출력 
 
 ## HTTP DELETE - Delete Record
 
