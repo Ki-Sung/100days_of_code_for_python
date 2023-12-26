@@ -1,5 +1,7 @@
 {% extends 'bootstrap/base.html' %}
 
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block content %}
 {% include "header.html" %}
   <!-- Page Header -->
@@ -20,8 +22,15 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
+
+        <!-- Load ckeditor -->
+        {{ ckeditor.load() }}
         
-          <!-- This is where the form will go -->
+        <!-- WTForm의 어떤 필드가 CKEditor가 되어야하는지 구성 -->
+        {{ ckeditor.config(name='body') }}
+
+        <!-- Add quickform -->
+        {{ wtf.quick_form(form) }}
 
       </div>
     </div>
