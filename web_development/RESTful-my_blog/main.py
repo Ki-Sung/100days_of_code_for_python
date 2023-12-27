@@ -1,3 +1,4 @@
+from datetime import date
 from flask import Flask, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
@@ -40,26 +41,43 @@ class CreatePostForm(FlaskForm):
 # 1. home page - url 체계: http://127.0.0.1:5000/
 @app.route('/')
 def get_all_posts():
-    posts = BlogPost.query.all()
-    return render_template("index.html", all_posts=posts)
+    posts = BlogPost.query.all()                                                    # DB에 있는 모든 블로그 게시물 조회
+    return render_template("index.html", all_posts=posts)                           # 조회된 모든 블로그 게시물 index.html 템플릿 렌더링 
 
-# 2. index 기준으로 게시된 블로그 글 조회 page - http://127.0.0.1:5000/post/<index>
+# 2. index 기준으로 게시된 블로그 글 조회 page - url 체계: http://127.0.0.1:5000/post/<index>
 @app.route("/post/<int:index>")
 def show_post(index):
-    requested_post = BlogPost.query.get(index)
-    return render_template("post.html", post=requested_post)
+    requested_post = BlogPost.query.get(index)                                      # index 기준 특정 게시물 조회 
+    return render_template("post.html", post=requested_post)                        # 요청된 게시물과 같이 post.html 템필릿 렌더링
 
-# 3. 새로운 게시글 추가 page - http://127.0.0.1:5000/new-post
+# 3. 새로운 게시글 추가 page - url 체계: http://127.0.0.1:5000/new-post
 @app.route("/new-post", methods=["GET", "POST"])
 def new_post():
-    form = CreatePostForm() 
-    return render_template("make-post.html", form=form)
+    form = CreatePostForm()                                                         # WTForm 양식 초기화 
+    if form.validate_on_submit():                                                   # 만약 WTForm 양식이 제출되었다면
+        new_post = BlogPost(                                                        # BlogPost 객체를 생성, 생성과 동시에 post 페이지에 기록한 데이터들 받기
+            title = form.title.data,                                                    # 게시글 제목 
+            subtitle = form.subtitle.data,                                              # 게시글 부제목
+            body = form.body.data,                                                      # 게시글 본문 
+            author = form.author.data,                                                  # 게시자 
+            img_url = form.img_url.data,                                                # 블로그에 사용할 Img_URL
+            date = date.today().strftime("%B %d, %Y")                                   # 게시 날짜 
+        )
+        
+        db.session.add(new_post)                                                    # 이력한 내용들 DB에 추가 
+        db.session.commit()                                                         # DB 변경사항 커밋 
+        
+        return redirect(url_for("get_all_posts"))                                   # 새 게시물을 성공적으로 추가한 후 get_all_posts(home에 있는 게시글 목록) 함수를 트리거하여 root URL로 리다이렉션
+    
+    return render_template("make-post.html", form=form)                             # 만약 양식이 제출되지 않거나 유효성 검사를 통과 못했을 경우 make-post.html 템플릿을 생성하기 위한 양식으로 렌더링
 
+
+# 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
 @app.route("/about")
 def about():
     return render_template("about.html")
 
-
+# 블로그 관리자 연락 page - url 체계: http://127.0.0.1:5000/contact
 @app.route("/contact")
 def contact():
     return render_template("contact.html")
