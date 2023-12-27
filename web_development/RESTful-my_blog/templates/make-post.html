@@ -30,7 +30,7 @@
         {{ ckeditor.config(name='body') }}
 
         <!-- Add quickform -->
-        {{ wtf.quick_form(form) }}
+        {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
       </div>
     </div>
