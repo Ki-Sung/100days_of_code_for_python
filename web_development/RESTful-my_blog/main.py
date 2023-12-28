@@ -74,14 +74,27 @@ def new_post():
 # 4. 기존 게시글 수정 page - url 체계: http://127.0.0.1:5000/edit-post/<post_id>
 @app.route("/edit-post/<int:index>", methods=["GET", "POST"])
 def edit_post(index):
-    post = BlogPost.query.get(index)                                                # index 기준 특정 게시물 조회 
-    edit_form = CreatePostForm(                                                     # index 기준 특정 게시물 게시글 수정을 위해 WTForm에 필드 자동으로 채우기 
+    # 수정할 게시글 불러오기 부분
+    post = BlogPost.query.get(index)                                                # index 기준 수정할 특정 게시물 조회 
+    edit_form = CreatePostForm(                                                     # index 기준 수정할 특정 게시물 게시글 수정을 위해 WTForm에 필드 자동으로 채우기 
         title=post.title,                                                               # 게시글 제목 
         subtitle=post.subtitle,                                                         # 게시글 부제목 
         img_url=post.img_url,                                                           # 블로그에 사용할 Img_URL
         author=post.author,                                                             # 게시자 
         body=post.body                                                                  # 게시글 본문
     )
+    
+    # 게시글 수정 데이터 대입 부분
+    if edit_form.validate_on_submit():                                              # 만약 WTForm 양식(edit_form)이 제출되었다면
+        post.title = edit_form.title.data                                               # 수정할 게시글 제목 
+        post.subtitle = edit_form.subtitle.data                                         # 수정할 게시글 부제목
+        post.img_url = edit_form.img_url.data                                           # 수정할 Img_URL
+        post.author = edit_form.author.data                                             # 수정할 게시자 
+        post.body = edit_form.body.data                                                 # 수정할 게시글 
+        
+        db.session.commit()                                                         # 수정완료 후 DB 변경사항 커밋  
+        return redirect(url_for("show_post", index=post.id))                      # 수정한 해당 게시글로 리다이렉션
+    
     return render_template("make-post.html", form=edit_form, is_edit=True)          # make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, form은 edit_form 지정, edit 허용
 
 # 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
