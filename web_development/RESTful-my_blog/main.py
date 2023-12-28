@@ -71,6 +71,18 @@ def new_post():
     
     return render_template("make-post.html", form=form)                             # 만약 양식이 제출되지 않거나 유효성 검사를 통과 못했을 경우 make-post.html 템플릿을 생성하기 위한 양식으로 렌더링
 
+# 4. 기존 게시글 수정 page - url 체계: http://127.0.0.1:5000/edit-post/<post_id>
+@app.route("/edit-post/<int:index>", methods=["GET", "POST"])
+def edit_post(index):
+    post = BlogPost.query.get(index)                                                # index 기준 특정 게시물 조회 
+    edit_form = CreatePostForm(                                                     # index 기준 특정 게시물 게시글 수정을 위해 WTForm에 필드 자동으로 채우기 
+        title=post.title,                                                               # 게시글 제목 
+        subtitle=post.subtitle,                                                         # 게시글 부제목 
+        img_url=post.img_url,                                                           # 블로그에 사용할 Img_URL
+        author=post.author,                                                             # 게시자 
+        body=post.body                                                                  # 게시글 본문
+    )
+    return render_template("make-post.html", form=edit_form, is_edit=True)          # make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, form은 edit_form 지정, edit 허용
 
 # 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
 @app.route("/about")
