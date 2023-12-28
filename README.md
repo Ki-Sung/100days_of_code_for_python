@@ -62,6 +62,9 @@
 - My Blog with Flask
 - My Personal site - Resume site with Flask
 - Tindog site with Bootstrap
+- My Favorite Movie Card with Flask
+- Cafe Info Site with Flask
+- My Blog with RESTful API 
 
 ### Etc
 #### Useful Generator
