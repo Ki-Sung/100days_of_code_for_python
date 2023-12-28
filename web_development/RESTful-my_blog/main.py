@@ -1,5 +1,5 @@
 from datetime import date
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, jsonify
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
@@ -41,16 +41,16 @@ class CreatePostForm(FlaskForm):
 # 1. home page - url 체계: http://127.0.0.1:5000/
 @app.route('/')
 def get_all_posts():
-    posts = BlogPost.query.all()                                                    # DB에 있는 모든 블로그 게시물 조회
+    posts = BlogPost.query.order_by(BlogPost.date.desc()).all()                     # DB에 있는 모든 블로그 게시물을 날짜 기준으로 내림차순으로 조회
     return render_template("index.html", all_posts=posts)                           # 조회된 모든 블로그 게시물 index.html 템플릿 렌더링 
 
-# 2. index 기준으로 게시된 블로그 글 조회 page - url 체계: http://127.0.0.1:5000/post/<index>
+# 2. index 기준으로 게시된 블로그 글 조회 page - url 체계: http://127.0.0.1:5000/post/<index> -> CRUD 중 READ
 @app.route("/post/<int:index>")
 def show_post(index):
     requested_post = BlogPost.query.get(index)                                      # index 기준 특정 게시물 조회 
     return render_template("post.html", post=requested_post)                        # 요청된 게시물과 같이 post.html 템필릿 렌더링
 
-# 3. 새로운 게시글 추가 page - url 체계: http://127.0.0.1:5000/new-post
+# 3. 새로운 게시글 추가 page - url 체계: http://127.0.0.1:5000/new-post -> CRUD 중 CREATE
 @app.route("/new-post", methods=["GET", "POST"])
 def new_post():
     form = CreatePostForm()                                                         # WTForm 양식 초기화 
@@ -71,7 +71,7 @@ def new_post():
     
     return render_template("make-post.html", form=form)                             # 만약 양식이 제출되지 않거나 유효성 검사를 통과 못했을 경우 make-post.html 템플릿을 생성하기 위한 양식으로 렌더링
 
-# 4. 기존 게시글 수정 page - url 체계: http://127.0.0.1:5000/edit-post/<post_id>
+# 4. 기존 게시글 수정 page - url 체계: http://127.0.0.1:5000/edit-post/<post_id> -> CRUD 중 UPDATE
 @app.route("/edit-post/<int:index>", methods=["GET", "POST"])
 def edit_post(index):
     # 수정할 게시글 불러오기 부분
@@ -96,6 +96,14 @@ def edit_post(index):
         return redirect(url_for("show_post", index=post.id))                      # 수정한 해당 게시글로 리다이렉션
     
     return render_template("make-post.html", form=edit_form, is_edit=True)          # make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, form은 edit_form 지정, edit 허용
+
+# 5. 게시글 삭제 - url 체계: http://127.0.0.1:5000/delete/<post_id> -> CRUD 중 DELTE
+@app.route("/delete/<int:index>")
+def delete_post(index):
+    post = BlogPost.query.get(index)                                                  # 해당 게시글 찾기
+    db.session.delete(post)                                                           # 해당 게시글 삭제
+    db.session.commit()                                                               # 삭제 후 변경사항 커밋
+    return redirect(url_for('get_all_posts'))                                         # 삭제 완료 후 Home으로 리다이렉션
 
 # 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
 @app.route("/about")

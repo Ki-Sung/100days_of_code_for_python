@@ -21,6 +21,8 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         {% for post in all_posts %}
         <div class="post-preview">
+
+          <!-- 블로그 삭제 앵커 태그 -->
           <a href="{{ url_for('show_post', index=post.id) }}">
             <h2 class="post-title">
               {{post.title}}
@@ -32,6 +34,8 @@
           <p class="post-meta">Posted by
             <a href="#">{{post.author}}</a>
             on {{post.date}}</p>
+            <a href="#" onclick="confirmDelete('{{ url_for('delete_post', index=post.id) }}')">✘</a>
+          </p>
         </div>
         <hr>
         {% endfor %}
@@ -44,5 +48,12 @@
     </div>
   </div>
   <hr>
+  <script>
+    function confirmDelete(deleteUrl) {
+      if (confirm("Are you sure you want to delete this post?")) {
+          window.location.href = deleteUrl;
+        }
+    }
+    </script>
 
 {% include "footer.html" %}
