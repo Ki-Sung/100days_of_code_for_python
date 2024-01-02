@@ -32,10 +32,15 @@ def home():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':                            # 요청 방식이 POST일 경우 
+        hash_and_salted_password = generate_password_hash(  # 해시와 솔트 방식으로 비밀번호 암호화 설정 
+            request.form.get('password'),                       # "password"의 키 값을 가져와 "new_user"의 "password" 필드에 설정
+            method='pbkdf2:sha256',                             # 단방향 해시 함수의 다이제스트 방식 설정 
+            salt_length=8                                       # 솔트 길이 8로 설정
+        )
         new_user = User(                                    # User 모델을 이용하여 새로운 유저 데이터 생성 
             email=request.form.get('email'),                    # "email"의 키 값을 가져와 "new_user"의 "email" 필드에 설정
             name=request.form.get('name'),                      # "name"의 키 값을 가져와 "new_user"의 "name" 필드에 설정 
-            password=request.form.get('password')               # "password"의 키 값을 가져와 "new_user"의 "password" 필드에 설정
+            password=hash_and_salted_password                   # 해시와 솔트 방식으로 저장한 password로 필드 설정 
         )
         
         db.session.add(new_user)                            # SQLAlchemy의 세션에 새로운 유저 데이터 추가
