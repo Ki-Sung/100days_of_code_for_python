@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
 # home page - URL 체계: http://127.0.0.1:5000/
 @app.route('/')
 def home():
-    return render_template("index.html")                    # 지정한 url 체계로 index.html 템플릿 랜더링
+    return render_template("index.html", logged_in=current_user.is_authenticated)   # 지정한 url 체계로 index.html 템플릿 랜더링 - 객체속성 추가: 사용자가 인증 결과 반환 (인증: True, 인증 X: False)
 
 # 새로운 유저 등록 - URL 체계: http://127.0.0.1:5000/register
 @app.route('/register', methods=['GET', 'POST'])
@@ -64,7 +64,7 @@ def register():
         
         return redirect(url_for('secrets'))                 # 등록 완료후 secrets 함수로 리디렉션
     
-    return render_template("register.html")                 # 지정한 url 체계로 register.html 템플릿 랜더링   
+    return render_template("register.html", logged_in=current_user.is_authenticated)       # 지정한 url 체계로 register.html 템플릿 랜더링 - 객체속성 추가: 사용자가 인증 결과 반환
 
 # 로그인 - URL 체계: http://127.0.0.1:5000/login 
 @app.route('/login', methods=['GET', 'POST'])
@@ -89,14 +89,14 @@ def login():
             login_user(user)                                         # 유저 로그인  
             return redirect(url_for('secrets'))                      # secrets 페이지로 리디렉션
         
-    return render_template("login.html")                             # 지정된 URL 체계로 login.html 템플릿을 렌더링합니다.
+    return render_template("login.html", logged_in=current_user.is_authenticated)        # 지정된 URL 체계로 login.html 템플릿을 렌더링합니다. - 객체속성 추가: 사용자가 인증 결과 반환
 
 # 시크릿 페이지 - URL 체계: http://127.0.0.1:5000/secrets 
 @app.route('/secrets')
 @login_required
 def secrets():
     print(current_user.name)                                         # 로그인 된 사용자 콘솔에 출력
-    return render_template("secrets.html", name=current_user.name)   # 지정한 url 체계로 secrets.html 템플릿 랜더링
+    return render_template("secrets.html", name=current_user.name, logged_in=True)   # 지정한 url 체계로 secrets.html 템플릿 랜더링 
 
 # 로그아웃 - URL 체계: http://127.0.0.1:5000/logout 
 @app.route('/logout')
