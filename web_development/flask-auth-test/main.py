@@ -39,12 +39,18 @@ def home():
 # 새로운 유저 등록 - URL 체계: http://127.0.0.1:5000/register
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-    if request.method == 'POST':                            # 요청 방식이 POST일 경우 
-        hash_and_salted_password = generate_password_hash(  # 해시와 솔트 방식으로 비밀번호 암호화 설정 
-            request.form.get('password'),                       # "password"의 키 값을 가져와 "new_user"의 "password" 필드에 설정
-            method='pbkdf2:sha256',                             # 단방향 해시 함수의 다이제스트 방식 설정 
-            salt_length=8                                       # 솔트 길이 8로 설정
+    if request.method == 'POST':                                                # 요청 방식이 POST일 경우 
+        
+        if User.query.filter_by(email=request.form.get('email')).first():           # 이미 존재하는 이메일 주소인지 확인
+            flash("You've already signed up with that email, log in instead!")      # 이미 이메일 주소가 존재할 경우 에러 메시지 화면에 출력 
+            return redirect(url_for('login'))                                       # 로그인 페이지로 리디렉션
+        
+        hash_and_salted_password = generate_password_hash(              # 해시와 솔트 방식으로 비밀번호 암호화 설정 
+            request.form.get('password'),                                   # "password"의 키 값을 가져와 "new_user"의 "password" 필드에 설정
+            method='pbkdf2:sha256',                                         # 단방향 해시 함수의 다이제스트 방식 설정 
+            salt_length=8                                                   # 솔트 길이 8로 설정
         )
+        
         new_user = User(                                    # User 모델을 이용하여 새로운 유저 데이터 생성 
             email=request.form.get('email'),                    # "email"의 키 값을 가져와 "new_user"의 "email" 필드에 설정
             name=request.form.get('name'),                      # "name"의 키 값을 가져와 "new_user"의 "name" 필드에 설정 
@@ -70,14 +76,18 @@ def login():
         user = User.query.filter_by(email=email).first()             # 유저 데이터 가져오기 
 
         # 사용자 데이터가 존재하는지, 비밀번호가 일치하는지 확인
-        if check_password_hash(user.password, password):             # 입력한 비밀번호와 해시+솔트 방식으로 저장된 비밀번호가 일치할 경우
-            login_user(user)                                         # 유저 로그인 
-            return redirect(url_for('secrets'))                      # secrets 페이지로 리디렉션
+        if not user:                                                # 만약 유저 데이터가 존재하지 않는 경우 
+            flash('That email does not exist, please try again.')   # 에러 메시지 출력 
+            return redirect(url_for('login'))                       # 로그인 페이지로 리디렉션
         
-        # 만약 비밀번호가 일치하지 않는 경우 
+        elif not check_password_hash(user.password, password):       # 입력한 비밀번호와 해시+솔트 방식으로 저장된 비밀번호가 일치하지 않을 경우
+            flash('Password incorrect, please try again.')           # 에러 메시지 출력
+            return redirect(url_for('login'))                        # 로그인 페이지로 리디렉션
+        
+        # 만약 등록된 유저 데이터가 일치할 경우 
         else:
-            flash("비밀번호가 일치하지 않습니다.")                          # 비밀번호가 일치 하지 않는다라는 메시지 출력 
-            return redirect(url_for('login'))                        # login 페이지로 리디렉션
+            login_user(user)                                         # 유저 로그인  
+            return redirect(url_for('secrets'))                      # secrets 페이지로 리디렉션
         
     return render_template("login.html")                             # 지정된 URL 체계로 login.html 템플릿을 렌더링합니다.
 
