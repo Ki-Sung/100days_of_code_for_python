@@ -10,7 +10,7 @@ from flask_ckeditor import CKEditor, CKEditorField
 ## --- 웹 서버 정의 ---
 app = Flask(__name__)                                           # flask 객체 선언 
 app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'   # 애플리케이션 비밀키 설정 - 비밀 키는 세션 및 CSRF(Cross-Site Request Forgery) 보호 및 Flask 기능을 보호하는데 사용
-ckeditor = CKEditor(app)                                        # 블로그 포스티 에디터인 CKEditor 객체 선언
+ckeditor = CKEditor(app)                                        # 블로그 포스트 에디터인 CKEditor 객체 선언
 Bootstrap(app)                                                  # flask 웹의 Bootstrap 초기화
 
 ## --- DB 연결 ---
