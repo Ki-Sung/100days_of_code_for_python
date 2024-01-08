@@ -18,3 +18,9 @@ class RegisterForm(FlaskForm):
     password = PasswordField("Password", validators=[DataRequired()])               # 유저 등록 password 입력 필드 - 빈 값 여부 유효성 검사 
     name = StringField("Name", validators=[DataRequired()])                         # 유저 등록 name 입력 필드 - 빈 값 여부 유효성 검사 
     submit = SubmitField("Sign Me Up!")                                             # 제출 버튼 
+
+## --- 유저 로그인을 위한 WTForm 클래스 정의 --- 
+class LoginForm(FlaskForm):
+    email = StringField("Email", validators=[DataRequired()])                       # 유저 등록 email 입력 필드 - 빈 값 여부 유효성 검사
+    password = PasswordField("Password", validators=[DataRequired()])               # 유저 등록 password 입력 필드 - 빈 값 여부 유효성 검사 
+    submit = SubmitField("Let Me In!")                                              # 제출 버튼
