@@ -114,10 +114,11 @@ def login():
     
     return render_template("login.html", form=form)                         # 지정된 URL 체계로 login.html 템플릿을 렌더링
 
-
+# 4. 로그아웃 - URL 체계: http://127.0.0.1:5000/logout
 @app.route('/logout')
 def logout():
-    return redirect(url_for('get_all_posts'))
+    logout_user()                                                       # Logout_user() 함수가 호출되어 현재 사용자를 로그아웃
+    return redirect(url_for('get_all_posts'))                           # 로그아웃 후 get_all_posts 함수(home)로 리디렉션
 
 
 @app.route("/post/<int:post_id>")
