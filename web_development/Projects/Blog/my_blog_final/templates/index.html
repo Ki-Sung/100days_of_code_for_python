@@ -30,10 +30,12 @@
             </h3>
           </a>
           <p class="post-meta">Posted by
-            <a href="#">{{post.author}}</a>
+            {{post.author}}
             on {{post.date}}
-          
-            <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
+            <!-- 만약 user id가 1(admin)이면, delete 버튼 생성 - 최초로 게시글을 작성한 id가 Admin  -->
+            {% if current_user.id == 1 %}
+              <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
+            {% endif %}
           
           </p>
         </div>
@@ -42,9 +44,12 @@
 
 
         <!-- New Post -->
+        <!-- 만약 user id가 1(admin)이면, 'Create New Post' 버튼 생성 -->
+        {% if current_user.id == 1 %}
         <div class="clearfix">
           <a class="btn btn-primary float-right" href="{{url_for('add_new_post')}}">Create New Post</a>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

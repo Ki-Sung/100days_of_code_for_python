@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, flash, request
+from flask import Flask, render_template, redirect, url_for, flash, abort
 from flask_bootstrap import Bootstrap
 from flask_ckeditor import CKEditor
 from datetime import date
@@ -8,6 +8,7 @@ from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
 from forms import CreatePostForm, RegisterForm, LoginForm
 from flask_gravatar import Gravatar
+from functools import wraps
 
 ## --- 웹 서버 정의 --
 app = Flask(__name__)                                           # flaks 객체 선언 
@@ -51,6 +52,16 @@ db.create_all()
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+## --- admin-only라는 데코레이터 작성 ---
+def admin_only(f):
+    @wraps(f)                                                           # 데코레이터 함수가 원래 이름과 독스트링을 유지하도록 보장
+    def decorated_function(*args, **kwargs):                            # 위치 및 키워드 인수를 원하는 만큼 취하므로 모든 함수와 함꼐 사용 가능                         
+        if current_user.id != 1:                                        # 로그인 상태인지 확인 - 만약 id가 1이 아닐 경우 
+            return abort(403)                                           # 403 에러 호출
+        return f(*args, **kwargs)                                       # 3단계의 조건이 충족되지 않으면(사용자 ID가 1임) 제공된 인수와 키워드를 사용하여 원래 함수 f()가 호출 됨
+    return decorated_function                                           # 데코레이터는 경로 정의의 원래 함수를 대체하는데 사용되는 래퍼 함수를 반환 
+
 
 ## --- 모든 라우터 정의 ---
 # 1. home 페이지 - URL 체계: http://127.0.0.1:5000/
@@ -120,69 +131,79 @@ def logout():
     logout_user()                                                       # Logout_user() 함수가 호출되어 현재 사용자를 로그아웃
     return redirect(url_for('get_all_posts'))                           # 로그아웃 후 get_all_posts 함수(home)로 리디렉션
 
-
+# 5. post_id 기준으로 게시된 블로그 글 조회 page - url 체계: http://127.0.0.1:5000/post/<post_id> -> CRUD 중 READ
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
-    requested_post = BlogPost.query.get(post_id)
-    return render_template("post.html", post=requested_post)
+    requested_post = BlogPost.query.get(post_id)                        # post_id 기준 특정 게시물 조회
+    return render_template("post.html", post=requested_post)            # 요청된 게시물과 같이 post.html 템플릿 랜더링
 
-
+# 6. 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
 @app.route("/about")
 def about():
-    return render_template("about.html")
+    return render_template("about.html")                                # about.html 템플릿 랜더링
 
-
+# 7. 블로그 관리자 연락 page - url 체계: http://127.0.0.1:5000/contact
 @app.route("/contact")
 def contact():
-    return render_template("contact.html")
+    return render_template("contact.html")                              # contact.html 템플릿 랜더링
 
-
-@app.route("/new-post")
+# 8. 새로운 게시글 추가 page - url 체계: http://127.0.0.1:5000/new-post -> CRUD 중 CREATE
+@app.route("/new-post", methods=['GET', 'POST'])
+@admin_only                                                             # 데코레이터 표시
 def add_new_post():
-    form = CreatePostForm()
-    if form.validate_on_submit():
-        new_post = BlogPost(
-            title=form.title.data,
-            subtitle=form.subtitle.data,
-            body=form.body.data,
-            img_url=form.img_url.data,
-            author=current_user,
-            date=date.today().strftime("%B %d, %Y")
+    form = CreatePostForm()                                             # WTForm 양식 초기화 
+    if form.validate_on_submit():                                       # 만약 WTForm 양식이 제출되었다면
+        new_post = BlogPost(                                            # BlogPost 객체를 생성, 생성과 동시에 post 페이지에 기록한 데이터들 받기
+            title=form.title.data,                                          # 게시글 제목 
+            subtitle=form.subtitle.data,                                    # 게시글 부제목 
+            body=form.body.data,                                            # 게시글 본문 
+            img_url=form.img_url.data,                                      # 블로그에 사용할 Img_URL
+            author=current_user,                                            # 블로그 게시자
+            date=date.today().strftime("%B %d, %Y")                         # 블로그 게시 날짜 
         )
-        db.session.add(new_post)
-        db.session.commit()
-        return redirect(url_for("get_all_posts"))
-    return render_template("make-post.html", form=form)
+        
+        db.session.add(new_post)                                        # 입력한 내용 DB에 추가 
+        db.session.commit()                                             # DB 변경사항 커밋 
+        
+        return redirect(url_for("get_all_posts"))                       # 새 게시물을 성공적으로 추가한 경우 get_all_posts(home에 있는 게시글 목록) 함수를 트리거하여 home URL로 리다이렉션
+    
+    return render_template("make-post.html", form=form, current_user=current_user) # 만약 양식이 제출되지 않거나 유효성 검사를 통과 못했을 경우 make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, 현재 로그인한 사용자에 대한 정보를 템플릿에서 사용할 수 있음
 
-
-@app.route("/edit-post/<int:post_id>")
+# 9. 기존 게시글 수정 page - url 체계: http://127.0.0.1:5000/edit-post/<post_id> -> CRUD 중 UPDATE
+@app.route("/edit-post/<int:post_id>", methods=['GET', 'POST'])
+@admin_only                                                             # 데코레이터 표시
 def edit_post(post_id):
-    post = BlogPost.query.get(post_id)
-    edit_form = CreatePostForm(
-        title=post.title,
-        subtitle=post.subtitle,
-        img_url=post.img_url,
-        author=post.author,
-        body=post.body
+    # 수정할 게시글 불러오는 부분
+    post = BlogPost.query.get(post_id)                                  # post_id 기준 수정할 특정 게시물 조회
+    edit_form = CreatePostForm(                                         # post_id 기준 수정할 특정 게시물 게시글 수정을 위해 WTForm에 필드 자동으로 채우기 
+        title=post.title,                                                   # 게시글 제목 
+        subtitle=post.subtitle,                                             # 게시글 부제목 
+        img_url=post.img_url,                                               # 게시글 img URL 
+        author=post.author,                                                 # 게시자 
+        body=post.body                                                      # 게시글 본문
     )
-    if edit_form.validate_on_submit():
-        post.title = edit_form.title.data
-        post.subtitle = edit_form.subtitle.data
-        post.img_url = edit_form.img_url.data
-        post.author = edit_form.author.data
-        post.body = edit_form.body.data
-        db.session.commit()
-        return redirect(url_for("show_post", post_id=post.id))
+    
+    # 게시글 수정 데이터 대입 부분
+    if edit_form.validate_on_submit():                                  # 만약 WTForm 양식(edit_form)이 제출되었다면
+        post.title = edit_form.title.data                                   # 수정할 게시글 제목 
+        post.subtitle = edit_form.subtitle.data                             # 수정할 게시글 부제목 
+        post.img_url = edit_form.img_url.data                               # 수정할 Img URL
+        post.author = edit_form.author.data                                 # 수정할 게시자 
+        post.body = edit_form.body.data                                     # 수정할 게시글 
+        
+        db.session.commit()                                             # 수정완료 후 DB애 변경사항 커밋 
+        return redirect(url_for("show_post", post_id=post.id))          # 수정한 해당 게시글로 리디렉션
 
-    return render_template("make-post.html", form=edit_form)
+    return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)     # make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, form은 edit_form 지정, edit 허용, 현재 로그인한 사용자에 대한 정보를 템플릿에서 사용할 수 있음
 
-
+# 10. 게시글 삭제 - url 체계: http://127.0.0.1:5000/delete/<post_id> -> CRUD 중 DELTE
 @app.route("/delete/<int:post_id>")
+@admin_only                                                             # 데코레이터 표시 
 def delete_post(post_id):
-    post_to_delete = BlogPost.query.get(post_id)
-    db.session.delete(post_to_delete)
-    db.session.commit()
-    return redirect(url_for('get_all_posts'))
+    post_to_delete = BlogPost.query.get(post_id)                        # 해당 게시글 찾기 
+    db.session.delete(post_to_delete)                                   # 해당 게시글 삭제 
+    db.session.commit()                                                 # 삭제 후 변경사항 커밋 
+    return redirect(url_for('get_all_posts'))                           # 삭제 완료 후 Home으로 리디렉션
 
 
 if __name__ == "__main__":

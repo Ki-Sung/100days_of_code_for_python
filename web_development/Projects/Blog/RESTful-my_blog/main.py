@@ -64,7 +64,7 @@ def new_post():
             date = date.today().strftime("%B %d, %Y")                                   # 게시 날짜 
         )
         
-        db.session.add(new_post)                                                    # 이력한 내용들 DB에 추가 
+        db.session.add(new_post)                                                    # 입력한 내용들 DB에 추가 
         db.session.commit()                                                         # DB 변경사항 커밋 
         
         return redirect(url_for("get_all_posts"))                                   # 새 게시물을 성공적으로 추가한 후 get_all_posts(home에 있는 게시글 목록) 함수를 트리거하여 root URL로 리다이렉션
