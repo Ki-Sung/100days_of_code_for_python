@@ -30,7 +30,7 @@
             </h3>
           </a>
           <p class="post-meta">Posted by
-            {{post.author}}
+            {{post.author.name}}
             on {{post.date}}
             <!-- 만약 user id가 1(admin)이면, delete 버튼 생성 - 최초로 게시글을 작성한 id가 Admin  -->
             {% if current_user.id == 1 %}
