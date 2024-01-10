@@ -6,7 +6,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
-from forms import CreatePostForm, RegisterForm, LoginForm
+from forms import CreatePostForm, RegisterForm, LoginForm, CommentForm
 from flask_gravatar import Gravatar
 from functools import wraps
 
@@ -152,7 +152,8 @@ def logout():
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     requested_post = BlogPost.query.get(post_id)                        # post_id 기준 특정 게시물 조회
-    return render_template("post.html", post=requested_post)            # 요청된 게시물과 같이 post.html 템플릿 랜더링
+    form = CommentForm()
+    return render_template("post.html", post=requested_post, form=form)            # 요청된 게시물과 같이 post.html 템플릿 랜더링
 
 # 6. 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
 @app.route("/about")

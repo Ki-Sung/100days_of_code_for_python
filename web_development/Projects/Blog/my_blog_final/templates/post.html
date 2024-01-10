@@ -1,5 +1,9 @@
-{% include "header.html" %}
+{% extends 'bootstrap/base.html' %}
 
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('{{post.img_url}}')">
     <div class="overlay"></div>
@@ -25,14 +29,22 @@
         <div class="col-lg-8 col-md-10 mx-auto">
             {{ post.body|safe }}
           <hr>
-
+            <!-- user.id가 1(admin)일 때, edit_post 버튼 생성 -->
+            {% if current_user.id ==1 %}
             <div class="clearfix">
             <a class="btn btn-primary float-right" href="{{url_for('edit_post', post_id=post.id)}}">Edit Post</a>
             </div>
-
+            {% endif %}
 
 
           <!--Comments Area -->
+          <!-- Load ckeditor -->
+          {{ ckeditor.load() }}
+          <!-- WTForm의 어떤 필드가 CKEditor가 되어야하는지 구성 -->
+          {{ ckeditor.config(name='comment_text') }}
+          <!-- Add quickform -->
+          {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
           <div class="col-lg-8 col-md-10 mx-auto comment">
               <ul class="commentList">
                 <li>
@@ -55,3 +67,4 @@
 
   <hr>
 {% include "footer.html" %}
+{% endblock %}
