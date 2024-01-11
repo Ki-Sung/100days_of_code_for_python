@@ -33,12 +33,16 @@ class User(UserMixin, db.Model):                                        # 상속
     password = db.Column(db.String(100))                                # 비밀번호(최대 길이 100인 string)
     name = db.Column(db.String(100))                                    # 유저 이름(최대 길이 100인 string)
     
-    # 각 사용자에게 첨부된 BlogPost 개체 목록처럼 동작, "author"는 BlogPost 클래스의 작성자 속성을 나타냄
+    # 각 사용자에게 첨부된 BlogPost 개체 목록처럼 동작, "author"는 BlogPost 클래스의 작성자 속성을 나타냄(즉, author 속성을 통해 연결하여 BlogPost 테이블과 일대다 관계 설정)
     # "author"는 BlogPost 클래스의 작성자 속성을 나타낸다.
     # 해당 코드는 "User' 클래스와 "BlogPost" 클래스 사이에 일대다 관계를 설정 -> 한 사용자가 여러 블로그 게시물을 가질 수 있지만, 각 블로그 게시물은 한명의 사용자에게만 속한다는 의미 
     # 1) 관계 대상 지정 -> "BlogPost" 클래스 
     # 2) back_populates 속성 -> 관계의 반대편(children)을 나타내는 대상 클래스의 속성을 나타냄 -> "author" 속성  
     posts = relationship("BlogPost", back_populates="author")        
+    
+    # comment_author 속성을 통해 연결하여 'Comment' 테이블과 일대다 관계를 설정
+    # "comment_author"는 Comment 클래스의 comment_author 속성을 나타냄
+    comments = relationship("Comment", back_populates="comment_author")
 
 ## --- SQLAlchemy ORM을 사용하여 BlogPost 테이블 구성 (Children) ---
 class BlogPost(db.Model):
@@ -59,7 +63,14 @@ class BlogPost(db.Model):
     date = db.Column(db.String(250), nullable=False)                    # 블로그 게시날짜(최대 길이 250인 string), not null 설정
     body = db.Column(db.Text, nullable=False)                           # 블로그 본문(Text), not null 설정
     img_url = db.Column(db.String(250), nullable=False)                 # 블로그 이미지 URL(최대 길이 250인 string), not null 설정
-    
+
+## --- SQLAlchemy ORM을 사용하여 Comment 테이블 구성 (Children) ---
+class Comment(db.Model):
+    __tablename__ = "comments"                                          # 테이블 명 지정 - comments
+    id = db.Column(db.Integer, primary_key=True)                        # id(정수형(Integer)의 기본 키(primary key) 컬럼), 테이블에서 기본 키로 사용
+    text = db.Column(db.Text, nullable=False)                           # 블로그 게시물 댓글(Text), not null 설정
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id"))        # "users.id" 사용자는 Users 클래스의 테이블 이름을 참조 -> id열을 참조하는 왜래키     
+    comment_author = relationship("User", back_populates="comments")    # "comments"는 User 클래스의 comments 속성을 나타냄 -> comments 속성을 통해 연결하여 "User" 테이블과 다대일 관계를 설정
 
 ## --- DB내 테이브르 생성 및 Flask-Login 기능 정의 ---
 # DB에 있는 모든 테이블 생성

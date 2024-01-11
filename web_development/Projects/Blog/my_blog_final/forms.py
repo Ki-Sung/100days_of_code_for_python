@@ -27,5 +27,5 @@ class LoginForm(FlaskForm):
     
 ## --- 댓글을 위한 WTForm 클래스 및 CKEditor 정의 ---
 class CommentForm(FlaskForm):
-    comment_text = CKEditorField("Comment", validators=[DataRequired()])
-    submit = SubmitField("Submit Comment")
+    comment_text = CKEditorField("Comment", validators=[DataRequired()])            # 댓글 텍스트 입력 필드  - CKEditorField 사용, 빈 값 여부 유효성 검사  
+    submit = SubmitField("Submit Comment")                                          # 제출 버튼
