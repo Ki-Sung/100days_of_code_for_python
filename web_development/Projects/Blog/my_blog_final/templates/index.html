@@ -21,6 +21,8 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         {% for post in all_posts %}
         <div class="post-preview">
+
+          <!-- 블로그 삭제 앵커 태그 -->
           <a href="{{ url_for('show_post', post_id=post.id) }}">
             <h2 class="post-title">
               {{post.title}}
@@ -34,14 +36,13 @@
             on {{post.date}}
             <!-- 만약 user id가 1(admin)이면, delete 버튼 생성 - 최초로 게시글을 작성한 id가 Admin  -->
             {% if current_user.id == 1 %}
-              <a href="{{url_for('delete_post', post_id=post.id) }}">✘</a>
+            <a href="#" onclick="confirmDelete('{{ url_for('delete_post', post_id=post.id) }}')">✘</a>
             {% endif %}
           
           </p>
         </div>
         <hr>
         {% endfor %}
-
 
         <!-- New Post -->
         <!-- 만약 user id가 1(admin)이면, 'Create New Post' 버튼 생성 -->
@@ -54,5 +55,12 @@
     </div>
   </div>
   <hr>
+  <script>
+    function confirmDelete(deleteUrl) {
+      if (confirm("Are you sure you want to delete this post?")) {
+          window.location.href = deleteUrl;
+        }
+    }
+    </script>
 
 {% include "footer.html" %}

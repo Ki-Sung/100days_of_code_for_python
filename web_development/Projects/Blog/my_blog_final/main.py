@@ -25,7 +25,7 @@ db = SQLAlchemy(app)                                            # SQLALCHEMY 객
 login_manager = LoginManager()                                  # Flask-Login 설정 
 login_manager.init_app(app)                                     # 설정된 Login을 Flask App과 연결
 
-## --- SQLAlchemy ORM을 사용하여 User 테이블 구성 (Parent) ---
+## --- SQLAlchemy ORM을 사용하여 User 테이블 구성 ---
 class User(UserMixin, db.Model):                                        # 상속되는 UserMixin는 상요자 인증을 위해 Flask-Login으로 작업할 때 사용됨
     __tablename__ = "users"                                             # 테이블 병 지정 - users
     id = db.Column(db.Integer, primary_key=True)                        # id(정수형(Integer)의 기본 키(primary key) 컬럼), 테이블에서 기본 키로 사용
@@ -44,7 +44,7 @@ class User(UserMixin, db.Model):                                        # 상속
     # "comment_author"는 Comment 클래스의 comment_author 속성을 나타냄
     comments = relationship("Comment", back_populates="comment_author")
 
-## --- SQLAlchemy ORM을 사용하여 BlogPost 테이블 구성 (Children) ---
+## --- SQLAlchemy ORM을 사용하여 BlogPost 테이블 구성 (Parent) ---
 class BlogPost(db.Model):
     __tablename__ = "blog_posts"                                        # 테이블 명 지정 - blog_posts
     id = db.Column(db.Integer, primary_key=True)                        # id(정수형(Integer)의 기본 키(primary key) 컬럼), 테이블에서 기본 키로 사용
@@ -63,14 +63,21 @@ class BlogPost(db.Model):
     date = db.Column(db.String(250), nullable=False)                    # 블로그 게시날짜(최대 길이 250인 string), not null 설정
     body = db.Column(db.Text, nullable=False)                           # 블로그 본문(Text), not null 설정
     img_url = db.Column(db.String(250), nullable=False)                 # 블로그 이미지 URL(최대 길이 250인 string), not null 설정
+    
+    # Parent Relation
+    comments = relationship("Comment", back_populates="parent_post")    # Comment 개체에 대한 참조를 만듬, "parent_post"은 Comment 클래스의 게시물 속성을 참조 
 
 ## --- SQLAlchemy ORM을 사용하여 Comment 테이블 구성 (Children) ---
 class Comment(db.Model):
     __tablename__ = "comments"                                          # 테이블 명 지정 - comments
     id = db.Column(db.Integer, primary_key=True)                        # id(정수형(Integer)의 기본 키(primary key) 컬럼), 테이블에서 기본 키로 사용
-    text = db.Column(db.Text, nullable=False)                           # 블로그 게시물 댓글(Text), not null 설정
     author_id = db.Column(db.Integer, db.ForeignKey("users.id"))        # "users.id" 사용자는 Users 클래스의 테이블 이름을 참조 -> id열을 참조하는 왜래키     
     comment_author = relationship("User", back_populates="comments")    # "comments"는 User 클래스의 comments 속성을 나타냄 -> comments 속성을 통해 연결하여 "User" 테이블과 다대일 관계를 설정
+    
+    # Chlidren Realtion
+    post_id = db.Column(db.Integer, db.ForeignKey("blog_posts.id"))     # 외래키 생성, "blog_posts.id" 블로그 포스트는 blog_posts의 테이블 이름을 참조 - 외래키의 역할은 두 개의 테이블을 연결해주는 역할을 함
+    parent_post = relationship("BlogPost", back_populates="comments")   # BlogPost 개체에 대한 참조를 만듬, "comments"은 BlogPost 클래스의 게시물 속성을 참조 
+    text = db.Column(db.Text, nullable=False)                           # 블로그 게시물 댓글(Text), not null 설정
 
 ## --- DB내 테이브르 생성 및 Flask-Login 기능 정의 ---
 # DB에 있는 모든 테이블 생성
@@ -160,11 +167,26 @@ def logout():
     return redirect(url_for('get_all_posts'))                           # 로그아웃 후 get_all_posts 함수(home)로 리디렉션
 
 # 5. post_id 기준으로 게시된 블로그 글 조회 page - url 체계: http://127.0.0.1:5000/post/<post_id> -> CRUD 중 READ
-@app.route("/post/<int:post_id>")
+@app.route("/post/<int:post_id>", methods=["GET", "POST"])
 def show_post(post_id):
+    form = CommentForm()                                                # WTForm 양식 CommentForm으로 초기화 
     requested_post = BlogPost.query.get(post_id)                        # post_id 기준 특정 게시물 조회
-    form = CommentForm()
-    return render_template("post.html", post=requested_post, form=form)            # 요청된 게시물과 같이 post.html 템플릿 랜더링
+    
+    if form.validate_on_submit():                                       # 만약 WTForm 양식이 제출되었다면
+        if not current_user.is_authenticated:                           # 만약 로그인 되어 있지 않다면         
+            flash("You need to login or register to comment.")          # 메시지 출력 - "로그인을 하시거나 유저 등록을 하시고 난 뒤 댓글을 작성해주세요"
+            return redirect(url_for("login"))                           # 로그인 페이지로 리디렉션 
+        
+        new_comment = Comment(                                          # Comment 모델을 이용하여 새로운 댓글 데이터 생성                                
+            text=form.comment_text.data,                                        # WTForm의 comment text 필드에 입력한 값에 액세스 (입력한 값 저장)
+            comment_author=current_user,                                        # 댓글 입력한 유저 정보 
+            parent_post=requested_post                                         # 댓글 대상 포스팅 
+        )
+        
+        db.session.add(new_comment)                                     # SQLAlchemy의 세션에 새로운 댓글 데이터 추가
+        db.session.commit()                                             # 변동 사항 DB에 커밋 
+        
+    return render_template("post.html", post=requested_post, form=form, current_user=current_user)     # 요청된 게시물과 같이 post.html 템플릿 랜더링, 현재 유저 지정
 
 # 6. 블로그 관리자 소개 page - url 체계: http://127.0.0.1:5000/about
 @app.route("/about")
@@ -208,7 +230,7 @@ def edit_post(post_id):
         title=post.title,                                                   # 게시글 제목 
         subtitle=post.subtitle,                                             # 게시글 부제목 
         img_url=post.img_url,                                               # 게시글 img URL 
-        author=post.author,                                                 # 게시자 
+        author=current_user,                                                # 게시자 
         body=post.body                                                      # 게시글 본문
     )
     
@@ -217,7 +239,7 @@ def edit_post(post_id):
         post.title = edit_form.title.data                                   # 수정할 게시글 제목 
         post.subtitle = edit_form.subtitle.data                             # 수정할 게시글 부제목 
         post.img_url = edit_form.img_url.data                               # 수정할 Img URL
-        post.author = edit_form.author.data                                 # 수정할 게시자 
+        post.author = current_user                                  # 수정할 게시자 
         post.body = edit_form.body.data                                     # 수정할 게시글 
         
         db.session.commit()                                             # 수정완료 후 DB애 변경사항 커밋 

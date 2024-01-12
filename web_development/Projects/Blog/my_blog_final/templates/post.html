@@ -46,17 +46,20 @@
           {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
 
           <div class="col-lg-8 col-md-10 mx-auto comment">
+            <!-- comment list 출력 (모든 댓글 출력) -->
+              {% for comment in post.comments %}
               <ul class="commentList">
                 <li>
                     <div class="commenterImage">
                       <img src="https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk.jpg"/>
                     </div>
                     <div class="commentText">
-                      <p>Some comment</p>
-                      <span class="date sub-text">comment author name</span>
+                      <p>{{ comment.text|safe }}</p>
+                      <span class="date sub-text">{{ comment.comment_author.name }}</span>
                     </div>
                 </li>
               </ul>
+              {% endfor %}
             </div>
 
 
