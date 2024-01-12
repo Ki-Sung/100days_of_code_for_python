@@ -25,6 +25,13 @@ db = SQLAlchemy(app)                                            # SQLALCHEMY 객
 login_manager = LoginManager()                                  # Flask-Login 설정 
 login_manager.init_app(app)                                     # 설정된 Login을 Flask App과 연결
 
+## --- 사용자 아바타를 추가하기 위한 Flask-Gravatar 설정 ---
+gravatar = Gravatar(app,                                        # Gravatar 확장자를 Flask에 추가
+                    size=100,                                   # Gravatar 이미지 크기 설정 (픽셀 단위)
+                    rating='g',                                 # Gravatar 이미지 콘텐츠 등급 설정 (g: 모든 오디언스에게 적합 )
+                    default='retro',                            # Gravatar 기본 이미지 설정 (Retro 타입)
+                    force_default=False)                        # Gravatar 이미지가  지정된 이미지 강제 사용 Off 
+
 ## --- SQLAlchemy ORM을 사용하여 User 테이블 구성 ---
 class User(UserMixin, db.Model):                                        # 상속되는 UserMixin는 상요자 인증을 위해 Flask-Login으로 작업할 때 사용됨
     __tablename__ = "users"                                             # 테이블 병 지정 - users
@@ -245,7 +252,8 @@ def edit_post(post_id):
         db.session.commit()                                             # 수정완료 후 DB애 변경사항 커밋 
         return redirect(url_for("show_post", post_id=post.id))          # 수정한 해당 게시글로 리디렉션
 
-    return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user)     # make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, form은 edit_form 지정, edit 허용, 현재 로그인한 사용자에 대한 정보를 템플릿에서 사용할 수 있음
+    # make-post.html 템플릿을 생성하기 위한 양식으로 렌더링, form은 edit_form 지정, edit 허용, 현재 로그인한 사용자에 대한 정보를 템플릿에서 사용할 수 있음
+    return render_template("make-post.html", form=edit_form, is_edit=True, current_user=current_user) 
 
 # 10. 게시글 삭제 - url 체계: http://127.0.0.1:5000/delete/<post_id> -> CRUD 중 DELTE
 @app.route("/delete/<int:post_id>")
@@ -256,6 +264,6 @@ def delete_post(post_id):
     db.session.commit()                                                 # 삭제 후 변경사항 커밋 
     return redirect(url_for('get_all_posts'))                           # 삭제 완료 후 Home으로 리디렉션
 
-
+# 어플리케이션 실행 - 디버그 모드 
 if __name__ == "__main__":
     app.run(debug=True)

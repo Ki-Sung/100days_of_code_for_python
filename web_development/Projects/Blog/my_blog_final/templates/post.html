@@ -51,10 +51,13 @@
               <ul class="commentList">
                 <li>
                     <div class="commenterImage">
-                      <img src="https://pbs.twimg.com/profile_images/744849215675838464/IH0FNIXk.jpg"/>
+                      <!-- 댓글을 작성자 이미지 추가를 위해 gravatar 사용 -->
+                      <img src="{{ comment.comment_author.email | gravatar }}"/>
                     </div>
                     <div class="commentText">
+                      <!-- 댓글 출력 -->
                       <p>{{ comment.text|safe }}</p>
+                      <!-- 댓글 작성자 이름 출력 -->
                       <span class="date sub-text">{{ comment.comment_author.name }}</span>
                     </div>
                 </li>
