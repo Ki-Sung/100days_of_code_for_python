@@ -64,7 +64,8 @@
 - Tindog site with Bootstrap
 - My Favorite Movie Card with Flask
 - Cafe Info Site with Flask
-- My Blog with RESTful API 
+- My Blog with RESTful API
+- My Blog with CRUD & Authentication
 
 ### Etc
 #### Useful Generator
