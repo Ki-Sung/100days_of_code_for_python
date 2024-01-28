@@ -58,7 +58,7 @@
 - My Business Card Page
 - My Blog Page 
 
-#### [Advanced - Web Development](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/web_development)
+#### [Advanced - Web Development](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/advanced_projects/web_projects)
 - My Blog with Flask
 - My Personal site - Resume site with Flask
 - Tindog site with Bootstrap
