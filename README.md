@@ -72,6 +72,10 @@
 - [Analysis of Development Language Popularity Over Time](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/02_Analysis_of_Development_Language_Popularity_Over_Time/02_Analysis_of_Development_Language_Popularity_Over_Time.ipynb)
 - [Lego Notebook](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/03_Lego_Notebook/03_Lego_Analysis.ipynb)
 - [Combine Google Trends with Other Time Series Data](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/04_Combine_Google_Trends_with_Other_Time_Series_Data/04_Combine_Google_Trends_with_Other_Time_Series_Data.ipynb)
+- Android App Store Analysis
+- Advanced Calculations Using Numpy and N-dimensional Arrays
+- Linear Regression And Data Visualization with Seaborn
+- Using Plotly And Matplotlib Seaborn Nobel Prizes Analysis
 
 ### Etc
 #### Useful Generator
