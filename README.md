@@ -67,15 +67,16 @@
 - My Blog with RESTful API
 - My Blog with CRUD & Authentication
 
-#### [Advanced - Data Analysis](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/advanced/data_analysis)
-- [Relationship Between College Major and Salary](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/01_Relationship_between_college_major_and_salary/01_Relationship_between_college_major_and_salary-Stduy.ipynb)
-- [Analysis of Development Language Popularity Over Time](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/02_Analysis_of_Development_Language_Popularity_Over_Time/02_Analysis_of_Development_Language_Popularity_Over_Time.ipynb)
-- [Lego Notebook](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/03_Lego_Notebook/03_Lego_Analysis.ipynb)
-- [Combine Google Trends with Other Time Series Data](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced/data_analysis/04_Combine_Google_Trends_with_Other_Time_Series_Data/04_Combine_Google_Trends_with_Other_Time_Series_Data.ipynb)
+#### [Advanced - Data Analysis](https://github.com/Ki-Sung/100days_of_code_for_python/tree/main/advanced_projects/data_analysis)
+- [Relationship Between College Major and Salary](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced_projects/data_analysis/01_Relationship_between_college_major_and_salary-Stduy.ipynb)
+- [Analysis of Development Language Popularity Over Time](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced_projects/data_analysis/02_Analysis_of_Development_Language_Popularity_Over_Time.ipynb)
+- [Lego Notebook](https://nbviewer.org/github/Ki-Sung/100days_of_code_for_python/blob/main/advanced_projects/data_analysis/03_Lego_Analysis.ipynb)
+- Combine Google Trends with Other Time Series Data
 - Android App Store Analysis
 - Advanced Calculations Using Numpy and N-dimensional Arrays
 - Linear Regression And Data Visualization with Seaborn
 - Using Plotly And Matplotlib Seaborn Nobel Prizes Analysis
+- The Tragedy of Hand Washing - T-test And Distribution
 
 ### Etc
 #### Useful Generator
